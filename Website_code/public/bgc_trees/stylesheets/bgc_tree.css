@@ -3,16 +3,16 @@
     padding-right: 3%;
 }
 
-/* Styles for tree view container */
+
 .tree_view {
     width: 100%;
     height: auto;
     background-color: white;
-    border-radius: 12px; /* Increased from 5px to 12px to match global.css */
-    padding: 35px 28px 28px 28px; /* Adjusted to match global.css */
+    border-radius: 12px; 
+    padding: 35px 28px 28px 28px; 
     margin-top: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); /* Updated to match global.css */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition from global.css */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
 .tree_view:hover {
@@ -20,7 +20,7 @@
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
 
-/* Control bar styles */
+
 .control-bar {
     display: flex;
     align-items: center;
@@ -29,50 +29,50 @@
     padding: 5px 0;
 }
 
-/* Download button */
+
 .download-btn {
-    background: linear-gradient(135deg, #307f5a, #2ecc71); /* Updated to match global.css button style */
+    background: linear-gradient(135deg, #307f5a, #2ecc71); 
     color: white;
     border: none;
-    padding: 10px 16px; /* Adjusted to match global.css */
-    border-radius: 8px; /* Increased from 4px to 8px */
+    padding: 10px 16px; 
+    border-radius: 8px; 
     cursor: pointer;
     font-size: 14px;
-    font-weight: 600; /* Added font-weight from global.css */
+    font-weight: 600; 
     transition: all 0.3s ease;
-    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.2); /* Added shadow from global.css */
+    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.2); 
 }
 
 .download-btn:hover {
-    background: linear-gradient(135deg, #2ecc71, #27ae60); /* Updated hover gradient */
-    transform: translateY(-2px); /* Added from global.css */
-    box-shadow: 0 5px 12px rgba(46, 204, 113, 0.3); /* Updated shadow on hover */
+    background: linear-gradient(135deg, #2ecc71, #27ae60); 
+    transform: translateY(-2px); 
+    box-shadow: 0 5px 12px rgba(46, 204, 113, 0.3); 
 }
 
-/* Style for the Open in New Window button */
+
 .open-new-window-btn {
-    background: linear-gradient(135deg, #5470c6, #3d58a8); /* Updated to match global.css dropdown style */
+    background: linear-gradient(135deg, #5470c6, #3d58a8); 
     color: white;
     border: none;
-    padding: 10px 16px; /* Adjusted to match global.css */
-    border-radius: 8px; /* Increased from 4px to 8px */
+    padding: 10px 16px; 
+    border-radius: 8px; 
     cursor: pointer;
     font-size: 14px;
-    font-weight: 500; /* Added font-weight from global.css */
+    font-weight: 500; 
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 5px;
-    box-shadow: 0 3px 8px rgba(84, 112, 198, 0.3); /* Added shadow from global.css */
+    box-shadow: 0 3px 8px rgba(84, 112, 198, 0.3); 
 }
 
 .open-new-window-btn:hover {
-    background: linear-gradient(135deg, #3d58a8, #304786); /* Updated hover gradient */
-    transform: translateY(-2px); /* Added from global.css */
-    box-shadow: 0 5px 12px rgba(84, 112, 198, 0.4); /* Updated shadow on hover */
+    background: linear-gradient(135deg, #3d58a8, #304786); 
+    transform: translateY(-2px); 
+    box-shadow: 0 5px 12px rgba(84, 112, 198, 0.4); 
 }
 
-/* Custom dropdown with search */
+
 .custom-dropdown {
     position: relative;
     width: 250px;
@@ -84,18 +84,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px; /* Increased from 8px 12px to 12px 15px */
+    padding: 12px 15px; 
     background-color: white;
-    border: 1px solid #e0e5ec; /* Updated from #ddd to #e0e5ec */
-    border-radius: 8px; /* Increased from 4px to 8px */
+    border: 1px solid #e0e5ec; 
+    border-radius: 8px; 
     cursor: pointer;
     user-select: none;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Added shadow from global.css */
-    transition: all 0.3s ease; /* Added transition */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); 
+    transition: all 0.3s ease; 
 }
 
 .dropdown-header:hover {
-    border-color: #1abc9c; /* Added hover state from global.css */
+    border-color: #1abc9c; 
 }
 
 .dropdown-arrow {
@@ -111,33 +111,33 @@
     max-height: 300px;
     overflow-y: auto;
     background-color: white;
-    border: 1px solid #e0e5ec; /* Updated from #ddd to #e0e5ec */
+    border: 1px solid #e0e5ec; 
     border-top: none;
-    border-radius: 0 0 8px 8px; /* Increased from 4px to 8px */
+    border-radius: 0 0 8px 8px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 10;
 }
 
 .dropdown-search {
     width: calc(100% - 16px);
-    padding: 12px 15px; /* Increased from 8px to 12px 15px */
+    padding: 12px 15px; 
     border: none;
-    border-bottom: 1px solid #f0f0f0; /* Updated from #eee to #f0f0f0 */
+    border-bottom: 1px solid #f0f0f0; 
     outline: none;
     font-size: 14px;
 }
 
 .dropdown-search:focus {
     outline: none;
-    border-color: #1abc9c; /* Added focus state from global.css */
-    box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.15); /* Added from global.css */
+    border-color: #1abc9c; 
+    box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.15); 
 }
 
 .options-container {
     max-height: 250px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #95a5a6 #f5f5f5; /* Added from global.css */
+    scrollbar-color: #95a5a6 #f5f5f5; 
 }
 
 .options-container::-webkit-scrollbar {
@@ -156,72 +156,72 @@
 }
 
 .dropdown-option {
-    padding: 10px 15px; /* Increased from 8px 12px */
+    padding: 10px 15px; 
     cursor: pointer;
-    transition: background-color 0.2s ease; /* Added transition */
+    transition: background-color 0.2s ease; 
 }
 
 .dropdown-option:hover {
-    background-color: rgba(48, 127, 90, 0.05); /* Updated from #f5f5f5 to match global.css */
-    color: #307f5a; /* Added from global.css */
+    background-color: rgba(48, 127, 90, 0.05); 
+    color: #307f5a; 
 }
 
 .dropdown-option.selected {
-    background-color: rgba(48, 127, 90, 0.1); /* Updated from #e6f7ff */
+    background-color: rgba(48, 127, 90, 0.1); 
     font-weight: bold;
-    color: #307f5a; /* Added from global.css */
-    border-left: 4px solid #307f5a; /* Added from global.css */
+    color: #307f5a; 
+    border-left: 4px solid #307f5a; 
     padding-left: 15px;
 }
 
 .no-results {
-    padding: 10px 15px; /* Increased from 8px 12px */
+    padding: 10px 15px; 
     color: #999;
     font-style: italic;
 }
 
-/* Title container */
+
 .title-container {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px; /* Increased from 10px */
+    margin-bottom: 20px; 
     width: 100%;
     max-width: 1800px;
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Title styles */
+
 .svg-title {
     font-weight: bold;
-    font-size: 18px; /* Increased from 16px */
-    color: #2c3e50; /* Updated from #333 to match global.css */
+    font-size: 18px; 
+    color: #2c3e50; 
 }
 
-/* SVG container styles */
+
 .tanglegram-container {
     width: 100%;
     max-width: 1800px;
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid #e0e5ec; /* Updated from #eee to #e0e5ec */
-    border-radius: 12px; /* Increased from 4px to 12px */
-    margin-bottom: 20px; /* Increased from 10px */
+    border: 1px solid #e0e5ec; 
+    border-radius: 12px; 
+    margin-bottom: 20px; 
     position: relative;
-    height: 800px; /* Fixed height */
-    overflow: auto; /* Make scrollable */
+    height: 800px; 
+    overflow: auto; 
     scrollbar-width: thin;
-    scrollbar-color: #95a5a6 #f5f5f5; /* Updated colors to match global.css */
+    scrollbar-color: #95a5a6 #f5f5f5; 
     scroll-behavior: smooth;
-    transition: all 0.3s ease; /* Added transition from global.css */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Added slight shadow */
+    transition: all 0.3s ease; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
 }
 
 .tanglegram-container:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Added hover effect */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); 
 }
 
-/* Customize scrollbars for webkit browsers */
+
 .tanglegram-container::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -229,20 +229,20 @@
 
 .tanglegram-container::-webkit-scrollbar-track {
     background: #f5f5f5;
-    border-radius: 10px; /* Increased from 4px to 10px */
+    border-radius: 10px; 
 }
 
 .tanglegram-container::-webkit-scrollbar-thumb {
-    background-color: #95a5a6; /* Updated from #ccc */
-    border-radius: 10px; /* Increased from 4px to 10px */
-    border: 2px solid #f5f5f5; /* Added border */
+    background-color: #95a5a6; 
+    border-radius: 10px; 
+    border: 2px solid #f5f5f5; 
 }
 
 .tanglegram-container::-webkit-scrollbar-thumb:hover {
-    background-color: #7f8c8d; /* Updated from #aaa */
+    background-color: #7f8c8d; 
 }
 
-/* Loading indicator */
+
 .loading-indicator {
     text-align: center;
     padding: 20px;
@@ -250,39 +250,39 @@
     font-size: 14px;
 }
 
-/* Stats display */
+
 .tanglegram-stats {
-    margin-top: 15px; /* Increased from 10px */
+    margin-top: 15px; 
     text-align: center;
-    font-size: 14px; /* Increased from 12px */
-    color: #555; /* Changed from #666 to #555 */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Added font-family from global.css */
+    font-size: 14px; 
+    color: #555; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
 }
 
-/* Make SVG responsive but with fixed height */
+
 .tanglegram-container svg {
     display: block;
     margin: 0 auto;
     width: 100%;
     height: auto;
-    background-color: #ffffff; /* Added background color */
+    background-color: #ffffff; 
 }
 
-/* Improved font rendering for tree labels */
+
 text {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Updated from Arial */
-    font-weight: 500; /* Slightly bolder */
-    paint-order: stroke; /* Improves text readability */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-weight: 500; 
+    paint-order: stroke; 
     stroke: #ffffff;
     stroke-linecap: round;
     stroke-linejoin: round;
-    cursor: pointer; /* Show pointer cursor on all labels */
+    cursor: pointer; 
 }
 
-/* Highlighted elements */
+
 .highlighted-leaf {
     font-weight: bold;
-    fill: #307f5a; /* Updated from #ff6600 to match global.css theme color */
+    fill: #307f5a; 
     font-size: 17px;
     stroke: #fff;
     stroke-width: 0.8px;
@@ -294,26 +294,26 @@ text {
     stroke-dasharray: none !important;
 }
 
-/* Improve node hover effects */
+
 .node:hover {
     cursor: pointer;
-    r: 5; /* Slightly larger on hover */
+    r: 5; 
     fill-opacity: 0.8;
 }
 
-/* Enhanced connection line hover effect */
+
 .connection:hover {
     stroke-width: 2.5;
     opacity: 1;
 }
 
-/* Nexus download button styling */
+
 .nexus-download-btn {
-    background: linear-gradient(135deg, #f39c12, #e67e22); /* Updated to match styling pattern */
+    background: linear-gradient(135deg, #f39c12, #e67e22); 
 }
 
 .nexus-download-btn:hover {
-    background: linear-gradient(135deg, #e67e22, #d35400); /* Updated hover state */
+    background: linear-gradient(135deg, #e67e22, #d35400); 
     transform: translateY(-2px);
     box-shadow: 0 5px 12px rgba(230, 126, 34, 0.3);
 }
@@ -321,17 +321,17 @@ text {
 .button-container {
     display: flex;
     align-items: center;
-    gap: 10px; /* Adjust spacing between buttons */
+    gap: 10px; 
 }
 
 .control-bar {
     display: flex;
     align-items: center;
-    justify-content: center; /* Ensure dropdown stays centered */
-    gap: 20px; /* Space between button container and dropdown */
+    justify-content: center; 
+    gap: 20px; 
 }
 
-/* Animation for fadeIn effect */
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -341,14 +341,14 @@ text {
     animation: fadeIn 0.5s ease forwards;
 }
 
-/* Media queries for responsive layout */
+
 @media (max-width: 1200px) {
     .tanglegram-container {
-        overflow-x: auto; /* Horizontal scroll for smaller screens */
+        overflow-x: auto; 
     }
     
     .tanglegram-container svg {
-        min-width: 1000px; /* Ensure enough width for labels on smaller screens */
+        min-width: 1000px; 
     }
 }
 

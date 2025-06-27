@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PanBGC-DB</title>
+
+    <link rel="stylesheet" href="global_definitions/stylesheets/global.css">
+    <link rel="stylesheet" href="global_definitions/stylesheets/homepage_logo.css">
+    <link rel="stylesheet" href="header/stylesheets/header.css">
+    <link rel="stylesheet" href="footer/stylesheets/footer.css">
+    <!-- Add Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        
+        #page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+        }
+        
+        #content-wrap {
+            flex: 1 0 auto;
+            width: 100%;
+            padding: 120px 0 20px; 
+        }
+        
+        
+        .welcome-container {
+            max-width: 1400px;
+            margin: 0 auto 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .welcome-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .welcome-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-logo {
+            width: 120px;
+            height: auto;
+            margin-right: 30px;
+        }
+        
+        .welcome-title h1 {
+            color: #2c3e50;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-title p {
+            color: #7f8c8d;
+            font-size: 18px;
+            font-weight: 400;
+        }
+        
+        .welcome-content {
+            color: #2c3e50;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto 50px;
+        }
+        
+        .feature-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 350px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .feature-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        
+        .feature-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: #1abc9c;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            color: #2c3e50;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .feature-description {
+            color: #34495e;
+            font-size: 16px;
+            line-height: 1.7;
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+        
+        .feature-link {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .feature-link:hover {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 188, 156, 0.3);
+        }
+        
+        .feature-link i {
+            margin-right: 8px;
+        }
+        
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        
+        @media (max-width: 991px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .welcome-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .welcome-logo {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .feature-card {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="page-container">
+    <div id="content-wrap">
+        <!--homepage header-->
+        <header id="header">
+            <!-- Menu -->
+        </header>
+        
+        <div class="main-content">
+            <!-- Welcome Section -->
+            <div class="welcome-container">
+                <div class="welcome-header">
+                    <img src="/images/logo.png" alt="PanBGC-DB Logo" class="welcome-logo">
+                    <div class="welcome-title">
+                        <h1>Welcome to PanBGC-DB</h1>
+                        <p>A comprehensive analysis pipeline for Gene cluster Families</p>
+                    </div>
+                </div>
+                <div class="welcome-content">
+                    <p>PanBGC-DB is a user-friendly web tool to explore biosynthetic gene clusters (BGCs) within Gene Cluster Families (GCFs). It allows researchers to investigate the diversity, conservation, and structure of BGCs in specific GCFs. Users can access and analyze GCFs containing BGCs from the antiSMASH database, generate visualizations of custom GCFs, and connect newly discovered BGCs to related families present in the database. </p>
+                    <p>This platform adapts established analysis of pangenomes on a Biosynthetic gene cluster level.</p>
+                </div>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="features-grid">
+                <!-- Database Card -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h2 class="feature-title">Database</h2>
+                    <div class="feature-description">
+                        <p>This database comprises Gene Cluster Families derived from biosynthetic gene clusters (BGCs) of the antiSMASH-DB. To build the GCFs the combnination of BiG-SLICE and BiG-SCAPE was used.</p>
+                        <p>It features precomputed analyses of individual GCFs, including core and pan-BGC composition, GCF openness, phylogenetic relationships, and structural diversity of BGCs.</p>
+                    </div>
+                    <a href="/database" class="feature-link">
+                        <i class="fas fa-search"></i> Explore Database
+                    </a>
+                </div>
+                
+                <!-- Query Card -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h2 class="feature-title">Query</h2>
+                    <div class="feature-description">
+                        <p>Upload your own GenBank files and analyze them against our database. Our query tool uses cblaster to link your BGC to GCFs present in our database.</p>
+                        <p>Simply upload your .gbk file, and our pipeline will process your data, showing a list of candidate GCFs and a presence / absence map to get a visual overview of which family is the closest.</p>
+                    </div>
+                    <a href="/Query" class="feature-link">
+                        <i class="fas fa-paper-plane"></i> Start Querying
+                    </a>
+                </div>
+                
+                <!-- Visualization Card -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h2 class="feature-title">Visualization</h2>
+                    <div class="feature-description">
+                        <p>Generate a intuitive visual representations of your own defined gene cluster family. Our easy to use visualization pipeline allows you to create the visualisation of one or multiple GCFs by using a python script pipeline.</p>
+                        <p>The scripts generate diagrams, heatmaps, phylogenetic trees as well as structural comparisons of the BGCs to better understand the natural occuring diversity of this family.</p>
+                    </div>
+                    <a href="/vis" class="feature-link">
+                        <i class="fas fa-eye"></i> View Visualizations
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer id="footer">
+        <!-- Footer content will be inserted by footer.js -->
+    </footer>
+</div>
+
+<!--the order in which the following scripts are arranged plays an important role-->
+<!--make header with menu-->
+<script src="header/scripts/menu.js"></script>
+<script src="header/scripts/header.js"></script>
+<!--make footer with text-->
+<script src="footer/scripts/footer.js"></script>
+<!--load dataclass-->
+<script src="data_loader/load_data_from_endpoint.js"></script>
+<!--make species dropdown menu-->
+<script src="select_species/scripts/generate_species.js"></script>
+<script src="select_species/scripts/dropdown_species.js"></script>
+
+</body>
+</html>

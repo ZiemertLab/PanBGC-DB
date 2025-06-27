@@ -1,0 +1,121 @@
+
+#dc_trees .tooltip-container {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+#dc_trees .tooltip-icon {
+    color: #666;
+    font-size: 14px;
+    cursor: help;
+}
+
+#dc_trees .tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    width: 250px;
+    background-color: white;
+    color: #333;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1001;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.4;
+    white-space: normal;
+    
+    
+    top: -5px; 
+    left: 100%;
+    margin-left: 10px;
+}
+
+
+#dc_trees .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 100%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent white transparent transparent;
+}
+
+#dc_trees .tooltip-container:hover .tooltip-text {
+    visibility: visible;
+}
+
+
+#dc_trees .alert {
+    overflow: visible !important;
+}
+
+#dc_trees .alert_windowbar_container {
+    overflow: visible !important;
+}
+
+
+#dc_trees {
+    margin: 15px 0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+#dc_trees .alert {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin-bottom: 0;
+}
+
+
+.heatmap_data {
+    padding: 15px;
+    background-color: #ffffff;
+}
+
+
+.tooltip {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #9eca7f;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    pointer-events: none;
+    max-width: 300px;
+}
+
+
+.heatmap_data .custom-scrollbar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 9px;
+    transition: height 0.2s ease;
+}
+
+.heatmap_data .custom-scrollbar-thumb {
+    background: #9eca7f;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+
+.heatmap_data .custom-scrollbar:hover {
+    height: 16px;
+}
+
+
+.heatmap_data svg text {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.heatmap_data svg .axis text {
+    fill: #333;
+}

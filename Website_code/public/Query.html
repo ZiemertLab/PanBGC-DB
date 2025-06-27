@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PanBGC-DB</title>
+
+    <link rel="stylesheet" href="global_definitions/stylesheets/global.css">
+    <link rel="stylesheet" href="global_definitions/stylesheets/homepage_logo.css">
+    <link rel="stylesheet" href="header/stylesheets/header.css">
+    <link rel="stylesheet" href="upload/stylesheets/upload.css">
+    <link rel="stylesheet" href="select_species/stylesheets/select_species.css">
+    <link rel="stylesheet" href="footer/stylesheets/footer.css">
+    <!-- Add Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div id="page-container">
+    <div id="content-wrap">
+        <!--homepage header-->
+        <header id="header">
+            <!-- Menu -->
+        </header>
+        
+        <div class="main-content-area">
+            <!-- Upload Section -->
+            <div class="index_loading_bar_area">
+                <!-- Loading bar -->
+                <div>
+                    <div id="progressBarContainer">
+                        <div id="progressBar"></div>
+                    </div>
+                    <div id="dataContainer_progress"></div>
+                </div>
+                <div class="loader" id="loader">
+                    Loading...
+                </div>
+            </div>
+            <div class="upload-container">
+                <h2><i class="fas fa-upload"></i> Upload File</h2>
+                
+                <label for="file-title" class="upload-label">Enter a name (optional):</label>
+                <input type="text" id="file-title" class="upload-input" placeholder="Enter a name for your file" />
+        
+                <label for="file-upload" class="upload-label">Upload a .gbk file:</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="file-upload" accept=".gbk" />
+                    <div class="file-upload-info">Supports .gbk format only</div>
+                </div>
+        
+                <div id="upload-feedback" class="upload-feedback"></div>
+        
+                <button id="upload-button" style="display: none;">RUN ANALYSIS</button>
+            </div>
+        
+            <!-- Results Container - Now has improved placeholder -->
+            <div id="results-container" class="results-container">
+                <h2><i class="fas fa-table"></i> Results</h2>
+                <div class="results-scroll-area">
+                    <div class="placeholder-message">
+                        <i class="fas fa-database"></i>
+                        <h3>No Results Yet</h3>
+                        <p>Upload a .gbk file and run the analysis to see results here</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Plot Container -->
+            <div id="plot-container">
+                <h2><i class="fas fa-chart-line"></i> Visualization</h2>
+                <div class="placeholder-message">
+                    <i class="fas fa-chart-area"></i>
+                    <h3>No Visualization Yet</h3>
+                    <p>Visualizations will appear here after analysis completes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer id="footer">
+        <!-- Footer content will be inserted by footer.js -->
+    </footer>
+</div>
+
+<!--the order in which the following scripts are arranged plays an important role-->
+<!--make header with menu-->
+<script src="header/scripts/menu.js"></script>
+<script src="header/scripts/header.js"></script>
+<script src="upload/scripts/upload.js"></script>
+<!--make footer with text-->
+<script src="footer/scripts/footer.js"></script>
+<!--load dataclass-->
+<script src="data_loader/load_data_from_endpoint.js"></script>
+<!--make species dropdown menu-->
+<script src="select_species/scripts/generate_species.js"></script>
+<script src="select_species/scripts/dropdown_species.js"></script>
+
+</body>
+</html>

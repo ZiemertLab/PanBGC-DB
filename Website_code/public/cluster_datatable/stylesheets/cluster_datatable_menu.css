@@ -1,0 +1,94 @@
+.cluster_button {
+    background: linear-gradient(135deg, #307f5a, #2ecc71);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.cluster_button:hover {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(46, 204, 113, 0.3);
+}
+
+.cluster_button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(46, 204, 113, 0.2);
+}
+
+
+
+.cluster_menu_container {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    color: #2c3e50;
+    font-size: 14px;
+    width: 100%; 
+}
+
+#cluster_menu_details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto; 
+}
+
+
+
+#coreElem {
+    font-weight: 600;
+    font-size: 14px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    background-color: rgba(156, 202, 127, 0.5);
+    display: inline-flex;
+    align-items: center;
+}
+
+#accElem {
+    font-weight: 600;
+    font-size: 14px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    background-color: rgba(255, 158, 102, 0.5);
+    margin-left: 5px;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+}
+
+
+.dataTables_wrapper .dataTables_length {
+    float: left;
+    text-align: left;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+}
+
+
+.dataTables_wrapper .dataTables_info {
+    clear: both;
+    float: left;
+    text-align: left;
+}
+
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+}
+

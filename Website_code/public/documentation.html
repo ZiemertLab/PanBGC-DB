@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PanBGC-DB Documentation</title>
+    
+    <!-- Original global styles -->
+    <link rel="stylesheet" href="global_definitions/stylesheets/global.css">
+    <link rel="stylesheet" href="global_definitions/stylesheets/homepage_logo.css">
+    <link rel="stylesheet" href="global_definitions/stylesheets/progress_bar.css">
+    <link rel="stylesheet" href="header/stylesheets/header.css">
+    <link rel="stylesheet" href="footer/stylesheets/footer.css">
+    
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        
+        #content-wrap {
+            background-color: #f5f7fa;
+        }
+        .doc-container {
+            display: grid;
+            grid-template-columns: 25% 73%;
+            gap: 2%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 90px 15px 20px 15px; 
+        }
+
+        
+        .doc-sidebar {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 28px;
+            height: fit-content;
+            position: sticky;
+            top: 80px; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .doc-sidebar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .doc-sidebar h2 {
+            color: #2c3e50;
+            font-size: 22px;
+            font-weight: 600;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .doc-sidebar h2 i {
+            margin-right: 10px;
+            color: #1abc9c;
+        }
+
+        
+        .doc-menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .doc-menu li {
+            margin-bottom: 15px;
+        }
+
+        .doc-menu a {
+            display: block;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        .doc-menu a:hover {
+            color: #1abc9c;
+            padding-left: 8px;
+        }
+
+        .doc-menu a.active {
+            color: #1abc9c;
+            border-left: 3px solid #1abc9c;
+            padding-left: 12px;
+        }
+
+        
+        .doc-submenu {
+            list-style-type: none;
+            padding-left: 16px;
+            margin: 8px 0;
+        }
+
+        .doc-submenu li {
+            margin-bottom: 6px;
+        }
+
+        .doc-submenu a {
+            font-size: 14px;
+            font-weight: 500;
+            padding: 4px 0 4px 12px;
+            border-left: 2px solid transparent;
+        }
+
+        .doc-submenu a:hover {
+            border-left: 2px solid #1abc9c;
+        }
+
+        
+        .doc-content {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 28px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: fit-content;
+        }
+
+        .doc-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .doc-content-inner {
+            max-height: calc(100vh - 120px); 
+            overflow-y: auto;
+            padding-right: 15px;
+            scroll-behavior: smooth;
+        }
+
+        
+        .doc-content-inner::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .doc-content-inner::-webkit-scrollbar-track {
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+
+        .doc-content-inner::-webkit-scrollbar-thumb {
+            background-color: #95a5a6;
+            border-radius: 10px;
+            border: 2px solid #f5f5f5;
+        }
+
+        .doc-content-inner::-webkit-scrollbar-thumb:hover {
+            background-color: #7f8c8d;
+        }
+
+        
+        .doc-welcome {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .doc-content h2 {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 22px;
+            font-weight: 600;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .doc-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .doc-content h2 i {
+            margin-right: 10px;
+            color: #1abc9c;
+        }
+
+        .doc-content h3 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .doc-content h3 i {
+            margin-right: 10px;
+            color: #1abc9c;
+        }
+
+        .doc-content p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        
+        .doc-note {
+            background-color: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid #2196F3;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        
+        .doc-code-container {
+            position: relative;
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .doc-code {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 0;
+            border-left: 4px solid #1abc9c;
+            overflow-x: auto;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: Monaco, Consolas, "Courier New", monospace;
+            font-size: 14px;
+            color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            white-space: pre;
+        }
+
+        .doc-copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #1abc9c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .doc-copy-btn:hover {
+            background-color: #16a085;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(22, 160, 133, 0.3);
+        }
+
+        
+        .doc-video {
+            width: 100%;
+            margin: 25px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-video video {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+
+        
+        @media (max-width: 991px) {
+            .doc-container {
+                grid-template-columns: 100%;
+            }
+            
+            .doc-sidebar {
+                margin-bottom: 20px;
+                position: static;
+            }
+            
+            .doc-content-inner {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="page-container">
+        <!-- Header -->
+        <header id="header">
+            <!-- Will be filled by script -->
+        </header>
+
+        <!-- Main content area -->
+        <div id="content-wrap">
+            <!-- Loading bar from original structure -->
+            <div class="container_index">
+                <div class="index_loading_bar_area">
+                    <div>
+                        <div id="progressBarContainer">
+                            <div id="progressBar"></div>
+                        </div>
+                        <div id="dataContainer_progress"></div>
+                    </div>
+                    <div class="loader" id="loader">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documentation container - simplified structure -->
+            <div class="doc-container">
+                <!-- Sidebar -->
+                <div class="doc-sidebar">
+                    <h2><i class="fas fa-book"></i> Documentation</h2>
+                    <ul class="doc-menu">
+                        <li>
+                            <a href="#intro" class="doc-nav-link active">About the PanBGC-DB</a>
+                            <ul class="doc-submenu">
+                                <li><a href="#intro-sub1" class="doc-nav-link">What is the PanBGC-DB?</a></li>
+                                <li><a href="#intro-sub2" class="doc-nav-link">Features</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#upload" class="doc-nav-link">How to use the Database</a>
+                            <ul class="doc-submenu">
+                                <li><a href="#upload-sub1" class="doc-nav-link">Select annotation database</a></li>
+                                <li><a href="#upload-sub2" class="doc-nav-link">Setting core cutoff</a></li>
+                                <li><a href="#upload-sub2b" class="doc-nav-link">GCF Openness</a></li>
+                                <li><a href="#upload-sub3" class="doc-nav-link">Gene Presence / absence map</a></li>
+                                <li><a href="#upload-sub4" class="doc-nav-link">Phylogenetic tree</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#species" class="doc-nav-link">Selecting Species</a>
+                            <ul class="doc-submenu">
+                                <li><a href="#species-sub1" class="doc-nav-link">Filter Options</a></li>
+                                <li><a href="#species-sub2" class="doc-nav-link">Taxonomy View</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#analysis" class="doc-nav-link">Analyzing Results</a>
+                            <ul class="doc-submenu">
+                                <li><a href="#analysis-sub1" class="doc-nav-link">Visualization</a></li>
+                                <li><a href="#analysis-sub2" class="doc-nav-link">Statistical Reports</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#contact" class="doc-nav-link">Contact</a>
+                            <ul class="doc-submenu">
+                                <li><a href="#contact-sub1" class="doc-nav-link">Support</a></li>
+                                <li><a href="#contact-sub2" class="doc-nav-link">Community</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Main content -->
+                <div class="doc-content">
+                    <div class="doc-content-inner">
+                        <p class="doc-welcome">Welcome to the PanBGC-DB documentation!</p>
+                        
+                        <h2 id="intro"><i class="fas fa-info-circle"></i> About the PanBGC-DB</h2>
+                        <p>The PanBGC-DB is an interactive web-tool designed to analyze diversity of Biosynthetic Gene Clusters (BGCs) inside one Gene Cluster Family. The PanBGC-DB adapts the pangenomic approach and the classification of core and accessory genes used in comparative genomics on a BGC level.</p>
+                        
+                        <h3 id="intro-sub1"><i class="fas fa-chevron-right"></i> What is the PanBGC-DB?</h3>
+                        <p>The PanBGC-DB is a tool/database containing bacterial clusters from antiSMASH-DB as well as curated clusters from MIBiG. The PanBGC-DB uses BiGSLICE and BiGSCAPE 2.0 clustered BGCs to create a dynamic visualization to investigate similarities and differences within a GCF. It adapts analysis used in pangenomics to a Biosynthetic gene cluster level.</p>
+                        
+                        <h3 id="intro-sub2"><i class="fas fa-chevron-right"></i> Features</h3>
+                        <p>The PanBGC-DB provides a range of features for comprehensive BGC analysis:</p>
+                        <ul>
+                            <li>Dynamic visualization of Gene Cluster Families</li>
+                            <li>Integration with multiple annotation databases</li>
+                            <li>Adjustable core cutoff parameters</li>
+                            <li>Statistical analysis of GCF openess</li>
+                            <li>Phylogenetic tree visualization</li>
+                            <li>Statistical analysis tools</li>
+                        </ul>
+                        
+                        <h2 id="upload"><i class="fas fa-laptop-code"></i> How to use the Database</h2>
+                        
+                        <h3 id="upload-sub1"><i class="fas fa-chevron-right"></i> Select Annotation Database</h3>
+                        <p>
+                            In <strong>PanBGC-DB</strong>, users can choose which annotation database is displayed for orthologous groups. 
+                            The annotation is done by Zol which uses different annotation databases to provide insights into gene 
+                            functions. The available databases include:
+                        </p>
+                        
+                        <ul>
+                            <li><strong>KO Annotation (KEGG Orthology)</strong>: Classifies genes into functional pathways based on the KEGG database, useful for metabolic and functional analyses.</li>
+                            <li><strong>PGAP Annotation (Prokaryotic Genome Annotation Pipeline)</strong>: NCBI's automated pipeline, providing high-quality gene function predictions for prokaryotic genomes.</li>
+                            <li><strong>PaperBLAST Annotation</strong>: Uses literature-based homology searches to predict gene function based on experimentally characterized proteins.</li>
+                            <li><strong>CARD Annotation (Comprehensive Antibiotic Resistance Database)</strong>: Identifies genes associated with antibiotic resistance mechanisms.</li>
+                            <li><strong>IS Finder</strong>: A specialized database for identifying and classifying <em>insertion sequences (IS)</em>, which are mobile genetic elements involved in genome evolution.</li>
+                            <li><strong>MIBiG Annotation (Minimum Information about a Biosynthetic Gene Cluster)</strong>: Focuses on the annotation of known biosynthetic gene clusters (BGCs), crucial for natural product discovery.</li>
+                            <li><strong>VOG Annotation (Virus Orthologous Groups)</strong>: Categorizes viral proteins into orthologous groups for functional and evolutionary studies.</li>
+                            <li><strong>VFDB Annotation (Virulence Factor Database)</strong>: Curated database of known virulence factors in bacterial pathogens, aiding in pathogenicity studies.</li>
+                            <li><strong>Pfam Domains</strong>: A widely used database of protein families and domains, based on hidden Markov models, for functional characterization.</li>
+                        </ul>
+                        <p>By selecting the preferred annotation type, users can customize the displayed annotation across the webpage.</p>
+                        
+                        <h3 id="upload-sub2"><i class="fas fa-chevron-right"></i> Setting Core Cutoff</h3>
+                        <p>
+                            The <strong>core cutoff</strong> determines how many clusters (in percentage) must contain at least one gene 
+                            from an orthologous group for that group to be considered part of the <strong>core BGC</strong>. This threshold allows 
+                            to define the core BGC more or less strictly based on the specific research needs.
+                        </p>
+                        
+                        <p>
+                            Adjusting the <strong>core cutoff</strong> dynamically with the slider updates the visualization, affecting both:
+                        </p>
+                        
+                        <ul>
+                            <li><strong>Core BGC Display</strong> – Shows only genes that meet the core threshold across the selected clusters in consensus order.</li>
+                            <li><strong>Maximum BGC Display</strong> – Represents the union of all genes present in the gene cluster family in consensus order.</li>
+                        </ul>
+                        
+                        <p>
+                            Additionally, when hovering over individual genes in the visualization, a tooltip provides information, including:
+                        </p>
+                        
+                        <ul>
+                            <li>The <strong>Orthologous Group ID</strong></li>
+                            <li>The selected <strong>annotation</strong></li>
+                            <li>In how many BGCs it is present</li>
+                            <li>If it is found more than once in the same BGC</li>
+                            <li>The median length of this gene across the Orthologous group</li>
+                        </ul>
+                        
+                        <p>
+                            By fine-tuning the core cutoff, users can explore variations in gene presence across clusters, helping to identify 
+                            conserved and variable regions within a <strong>Gene Cluster Family (GCF)</strong>.
+                        </p>
+                        
+                        <div class="doc-note">
+                            <p><strong>Note:</strong> The information is also displayed in a table format further down the page for more detailed analysis.</p>
+                        </div>
+                        
+                        <p>
+                            <strong>Tip:</strong> Adjusting the core cutoff can reveal subtle differences in gene content between clusters. 
+                            Use this feature to focus on highly conserved genes or to explore accessory gene diversity within your dataset.
+                        </p>
+
+                        <!-- NEW SECTION: GCF Openness -->
+                        <h3 id="upload-sub2b"><i class="fas fa-chevron-right"></i> GCF Openness</h3>
+
+                        <p>
+                            <strong>GCF Openness</strong> reflects how much biosynthetic diversity exists within a Gene Cluster Family (GCF) and whether new gene content is still being discovered as more genomes or BGCs are analyzed.
+                        </p>
+
+                        <p>
+                            A GCF is considered:
+                        </p>
+
+                        <ul>
+                            <li><strong>Closed</strong> if most genes are already known and few new ones are found as more BGCs are added.</li>
+                            <li><strong>Open</strong> if new, previously unseen genes continue to appear with each additional BGC.</li>
+                        </ul>
+
+                        <p>
+                            This concept is adapted from pangenome analysis and helps distinguish between highly conserved GCFs (closed) and highly diverse ones (open). Openness can indicate evolutionary variability, environmental adaptation, or unexplored metabolic potential.
+                        </p>
+
+                        <h4><strong>How is openness measured?</strong></h4>
+
+                        <p>
+                            Openness is estimated using <strong>Heaps' Law</strong>, a statistical model:
+                        </p>
+
+                        <div class="doc-code-container">
+                            <pre class="doc-code">S(n) = K × n^γ</pre>
+                        </div>
+
+                        <p>
+                            Where:
+                        </p>
+                        <ul>
+                            <li><strong>S(n)</strong> = number of unique BGCs or gene sets discovered after analyzing <strong>n</strong> BGCs</li>
+                            <li><strong>K</strong> = a scaling constant</li>
+                            <li><strong>γ (gamma)</strong> = the <strong>openness coefficient</strong></li>
+                        </ul>
+
+                        <p>
+                            The key parameter is <strong>γ (gamma)</strong>, which determines how quickly new genes accumulate:
+                        </p>
+
+                        <ul>
+                            <li><strong>γ &lt; 0.3:</strong> The GCF is <strong>closed</strong> — the gene repertoire is largely conserved.</li>
+                            <li><strong>γ between 0.3 and 0.6:</strong> The GCF shows <strong>moderate openness</strong> — some gene diversity remains.</li>
+                            <li><strong>γ &gt; 0.6:</strong> The GCF is <strong>open</strong> — high gene diversity, with new genes continuing to emerge.</li>
+                        </ul>
+
+                        <div class="doc-note">
+                            <p><strong>Note:</strong> Higher γ values suggest ongoing evolution or the presence of rare, strain-specific genes.</p>
+                        </div>
+
+                        <h4><strong>How is the γ value calculated?</strong></h4>
+
+                        <p>
+                            To calculate openness, PanBGC-DB performs <strong>100 random simulations</strong> per GCF:
+                        </p>
+
+                        <ol>
+                            <li>BGCs are randomly shuffled.</li>
+                            <li>They are added one by one into the dataset.</li>
+                            <li>At each step, the number of <em>unique</em> genes or gene compositions discovered is recorded.</li>
+                        </ol>
+
+                        <p>
+                            These 100 discovery curves are averaged into a single curve, which is then fitted to Heaps’ Law. The resulting <strong>γ</strong> value is used to determine openness.
+                        </p>
+
+                        <h4><strong>What defines a “new” BGC?</strong></h4>
+
+                        <p>
+                            Depending on your selection, PanBGC-DB offers two methods for defining uniqueness:
+                        </p>
+
+                        <ul>
+                            <li><strong>Newly added genes:</strong> A BGC is counted as “new” if it contains <em>at least one gene</em> (Ortholog Group ID) not found in any previously added BGCs.</li>
+                            <li><strong>Unique gene composition:</strong> A BGC is only considered “new” if its entire set of genes differs from all previous BGCs.</li>
+                        </ul>
+
+                        <p>
+                            These options allow flexibility in detecting either fine-grained novelty (single new genes) or major compositional differences.
+                        </p>
+
+                        <h4><strong>Which fitting method is used?</strong></h4>
+
+                        <p>
+                            To ensure accuracy, PanBGC-DB tries <strong>three curve-fitting techniques</strong> and selects the best one based on the <strong>R² value</strong> (goodness of fit):
+                        </p>
+
+                        <ol>
+                            <li><strong>Standard log-log linear regression</strong></li>
+                            <li><strong>Weighted regression</strong> — gives more weight to later data points</li>
+                            <li><strong>Nonlinear optimization</strong> — fits the full curve using gradient descent</li>
+                        </ol>
+
+                        <p>
+                            The method that produces the best fit (highest R²) is used, and its name is displayed along with the openness value. A higher R² indicates a better representation of the discovery curve by the model.
+                        </p>
+
+                        <div class="doc-note">
+                            <p><strong>Tip:</strong> Open GCFs (γ &gt; 0.6) often indicate high ecological or functional diversity. Closed GCFs (γ &lt; 0.3) may represent core metabolic functions or conserved biosynthetic pathways.</p>
+                        </div>
+                        <!-- END NEW SECTION -->
+
+                        <h3 id="upload-sub3"><i class="fas fa-chevron-right"></i> Gene Presence / Absence Map</h3>
+                        <p>The <strong>Gene Presence-Absence map</strong> provides a clear way to see which genes are found in each Biosynthetic Gene Cluster. The map is organized with BGC names along the Y-axis and orthologous groups along the X-axis, making it easy to compare clusters. Each square in the map represents whether a specific gene is present in a BGC. If the square is green, the BGC contains that gene, while a gray square means the gene is absent. This visualization helps to identify patterns, such as shared genes between clusters or unique genes in specific BGCs. Since there can be many BGCs and genes, the table is scrollable in both directions, allowing for easy exploration of large datasets.</p>
+
+                        <h3 id="upload-sub4"><i class="fas fa-chevron-right"></i> Phylogenetic Tree</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam consectetur, purus nec maximus tristique, nunc nisi efficitur lectus, nec aliquam ipsum est a libero. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec elementum lacinia scelerisque.</p>
+
+                        <h2 id="species"><i class="fas fa-dna"></i> Selecting Species</h2>
+                        <h3 id="species-sub1"><i class="fas fa-chevron-right"></i> Filter Options</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod magna et felis volutpat fringilla. Vestibulum vel lacus vel nulla ultricies facilisis. Nulla facilisi. Phasellus tempor nisl ut dolor lobortis venenatis. Phasellus sodales risus non odio elementum, id finibus turpis eleifend.</p>
+                        
+                        <h3 id="species-sub2"><i class="fas fa-chevron-right"></i> Taxonomy View</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+
+                        <h2 id="analysis"><i class="fas fa-chart-bar"></i> Analyzing Results</h2>
+                        <h3 id="analysis-sub1"><i class="fas fa-chevron-right"></i> Visualization</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et ante vel mauris porttitor volutpat. Fusce sit amet ex ut arcu feugiat consequat. Vivamus vitae leo ac quam faucibus volutpat vel vel orci. Etiam tincidunt magna id facilisis viverra. Maecenas eget enim vel nisi feugiat luctus.</p>
+                        
+                        <h3 id="analysis-sub2"><i class="fas fa-chevron-right"></i> Statistical Reports</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum. Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+
+                        <h2 id="contact"><i class="fas fa-phone"></i> Contact</h2>
+                        <h3 id="contact-sub1"><i class="fas fa-chevron-right"></i> Support</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec ullamcorper nulla non metus auctor fringilla. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+                        
+                        <div class="doc-note">
+                            <p><strong>Important:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <ul>
+                                <li>Lorem ipsum dolor sit amet</li>
+                                <li>Consectetur adipiscing elit</li>
+                                <li>Nullam quis risus eget</li>
+                            </ul>
+                        </div>
+
+                        <h3 id="contact-sub2"><i class="fas fa-chevron-right"></i> Community</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                        
+                        <div class="doc-code-container">
+                            <pre class="doc-code" id="community-link">test</pre>
+                            <button class="doc-copy-btn" data-target="community-link"><i class="fas fa-copy"></i> Copy</button>
+                        </div>
+                        
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                        
+                        <div class="doc-code-container">
+                            <pre class="doc-code" id="github-command">test</pre>
+                            <button class="doc-copy-btn" data-target="github-command"><i class="fas fa-copy"></i> Copy</button>
+                        </div>
+                        
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id elit non mi porta gravida at eget metus. Vestibulum id ligula porta felis euismod semper.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer id="footer">
+            <!-- Will be filled by script -->
+        </footer>
+    </div>
+
+    <!-- Include the original scripts in the correct order -->
+    <script src="header/scripts/menu.js"></script>
+    <script src="header/scripts/header.js"></script>
+    <script src="upload/scripts/upload.js"></script>
+    <script src="footer/scripts/footer.js"></script>
+    <script src="data_loader/load_data_from_endpoint.js"></script>
+    <script src="select_species/scripts/generate_species.js"></script>
+    <script src="select_species/scripts/dropdown_species.js"></script>
+
+    <!-- Basic JavaScript for the documentation page with scroll spy -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all navigation links
+            var navLinks = document.querySelectorAll('.doc-nav-link');
+            var contentArea = document.querySelector('.doc-content-inner');
+            
+            // Navigation click handling - smooth scroll to sections
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Get the target section
+                    var targetId = this.getAttribute('href');
+                    var targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        // Smooth scroll to target with improved offset adjustment
+                        contentArea.scrollTo({
+                            top: targetElement.offsetTop - 120,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Scroll spy function - highlight active section in sidebar
+            function updateActiveSection() {
+                // Get all section headers
+                var sections = document.querySelectorAll('.doc-content h2, .doc-content h3');
+                var scrollPosition = contentArea.scrollTop;
+                
+                // Find the current visible section
+                var activeSection = null;
+                
+                sections.forEach(function(section) {
+                    // Add a small offset to improve usability
+                    if (section.offsetTop <= (scrollPosition + 100)) {
+                        activeSection = section.getAttribute('id');
+                    }
+                });
+                
+                // Update active class on navigation links
+                if (activeSection) {
+                    // Remove active class from all links
+                    navLinks.forEach(function(link) {
+                        link.classList.remove('active');
+                    });
+                    
+                    // Find and highlight the active link
+                    var activeLink = document.querySelector('.doc-nav-link[href="#' + activeSection + '"]');
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                        
+                        // If it's a subsection, also highlight the parent section
+                        if (activeSection.includes('-sub')) {
+                            // Get the parent section ID
+                            var parentSection = activeSection.split('-sub')[0];
+                            var parentLink = document.querySelector('.doc-nav-link[href="#' + parentSection + '"]');
+                            if (parentLink) {
+                                parentLink.classList.add('active');
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Add scroll event listener to track scroll position
+            contentArea.addEventListener('scroll', updateActiveSection);
+            
+            // Initial update when page loads
+            updateActiveSection();
+            
+            // Copy buttons functionality
+            var copyButtons = document.querySelectorAll('.doc-copy-btn');
+            
+            copyButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var targetId = this.getAttribute('data-target');
+                    var codeElement = document.getElementById(targetId);
+                    var text = codeElement.textContent;
+                    
+                    navigator.clipboard.writeText(text)
+                        .then(function() {
+                            var originalHTML = button.innerHTML;
+                            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            button.style.backgroundColor = '#4caf50';
+                            
+                            setTimeout(function() {
+                                button.innerHTML = originalHTML;
+                                button.style.backgroundColor = '#1abc9c';
+                            }, 2000);
+                        })
+                        .catch(function() {
+                            alert('Failed to copy text');
+                        });
+                });
+            });
+            
+            // Video autoplay when in view
+            var videos = document.querySelectorAll('.doc-video video');
+            
+            contentArea.addEventListener('scroll', function() {
+                videos.forEach(function(video) {
+                    var rect = video.getBoundingClientRect();
+                    var containerRect = contentArea.getBoundingClientRect();
+                    
+                    var isVisible = rect.top >= containerRect.top && 
+                                    rect.bottom <= containerRect.bottom;
+                    
+                    if (isVisible) {
+                        if (video.paused) video.play();
+                    } else {
+                        if (!video.paused) video.pause();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

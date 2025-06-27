@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PanBGC-DB</title>
+
+    <link rel="stylesheet" href="global_definitions/stylesheets/global.css">
+    <link rel="stylesheet" href="global_definitions/stylesheets/homepage_logo.css">
+    <link rel="stylesheet" href="global_definitions/stylesheets/progress_bar.css">
+    <link rel="stylesheet" href="header/stylesheets/header.css">
+    <link rel="stylesheet" href="select_species/stylesheets/select_species.css">
+    <link rel="stylesheet" href="footer/stylesheets/footer.css">
+    <link rel="stylesheet" href="upload/stylesheets/user_vis.css">
+    <!-- Add Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div id="page-container">
+    <div id="content-wrap">
+        <!--start of content wrapper, so footer is always on bottom-->
+        <!--homepage header-->
+        <header id="header">
+            <!-- Menu -->
+        </header>
+        
+        <div class="main-content-area">
+            <div class="index_loading_bar_area">
+                <!-- Loading bar -->
+                <div>
+                    <div id="progressBarContainer">
+                        <div id="progressBar"></div>
+                    </div>
+                    <div id="dataContainer_progress"></div>
+                </div>
+                <div class="loader" id="loader">
+                    Loading...
+                </div>
+            </div>
+            
+            <div class="dual-container">
+                <div class="upload-container">
+                    <h2><i class="fas fa-upload"></i> Upload Visualisation</h2>
+                    <label for="data-file-upload" class="upload-label">Upload Visualisation.json file:</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="data-file-upload" />
+                        <div class="file-upload-info">Supports .json format only</div>
+                    </div>
+                    <div id="data-upload-feedback" class="feedback"></div>
+                    <button id="data-upload-button" style="display: none;">UPLOAD</button>
+                </div>
+                
+                <div class="instructions-container">
+                    <h2><i class="fas fa-info-circle"></i> How to Create the Visualisation</h2>
+                    <div class="instruction-content">
+                        <h3><i class="fas fa-cogs"></i> Prerequisites</h3>
+                        <p>This instructions work for Linux and MacOS. If you are working on Windows <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank">Windows Subsystem for Linux (WSL)</a> is recommanded.</p>
+                        <p>To create the visualisation, follow these steps:</p>
+                        
+                        
+                        <ol>
+                            <li>
+                                <strong>Install Miniconda</strong>
+                                <p>Download and install <a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank">Miniconda</a> for your operating system.</p>
+                            </li>
+                            
+                            <li>
+                                <strong>Download Required Tools</strong>
+                                <ul>
+                                    <li>Download and extract the folder <a href="https://github.com/chaoszhang/ASTER/blob/master/tutorial/astral-pro3.md" target="_blank">Astral Pro 3</a> from GitHub.</li>
+                                    <li>Download and extract the folder <a href="/data/Scripts.zip" download>Scripts.zip</a> file and extract the folder. </li>
+                                </ul>
+                            </li>
+                        </ol>
+                        
+                        <h3><i class="fas fa-terminal"></i> Installation Commands</h3>
+                        <p><strong>For Debian (Ubuntu) and MacOS with Intel chip:</strong></p>
+                        <div class="code-block">
+                            <code>conda create --name PanBGC_vis -c conda-forge -c bioconda zol</code>
+                            <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                        </div>
+                        <p><strong>For MacOS with Apple Silicon chip:</strong></p>
+                        <div class="code-block">
+                            <code>CONDA_SUBDIR=osx-64 conda create -n PanBGC_vis -c conda-forge -c bioconda zol</code>
+                            <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                        </div>
+                        <p><strong>The rest is the same for all operating systems:</strong></p>
+                        <div class="code-block">
+                            <code>conda activate PanBGC_vis</code>
+                            <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                        </div>
+                        <div class="code-block">
+                            <code>pip install openpyxl tqdm</code>
+                            <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                        </div>
+                        <div class="note">
+                            <p><i class="fas fa-lightbulb"></i> <strong>Note:</strong> If you want to use all the annotation libraries, you can remove the <code>-m</code> flag from the following command. This will increase download an run time.</p>
+                        </div>
+                        <div class="code-block">
+                            <code>setup_annotation_dbs.py -m</code>
+                            <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                        </div>
+                        <h3><i class="fas fa-play-circle"></i> Running the Pipeline</h3>
+                        <p>After installing the prerequisites and setting up your environment, follow these steps to run the pipeline:</p>
+                        
+                        <ol>
+                            <li>
+                                <strong>Extract the Scripts</strong>
+                                <p>Extract the downloaded Scripts.zip file to a location of your choice.</p>
+                            </li>
+                            
+                            <li>
+                                <strong>Navigate to the Scripts Directory</strong>
+                                <div class="code-block">
+                                    <code>cd /path/to/extracted/Scripts</code>
+                                    <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <strong>Run the Pipeline</strong>
+                                <div class="note">
+                                    <p><i class="fas fa-lightbulb"></i> <strong>Note:</strong> If visualising a single Gene Cluster Family (GCF), the input folder can contain the GenBank files directly. If visualising multiple GCFs, select a folder that contains subfolders, each representing a GCF with its respective GenBank files. No other changes are required.</p>
+                                </div>
+                                <p>Execute the PanBGC.py script with the following parameters:</p>
+                                <div class="code-block">
+                                    <code>python PanBGC.py -i /path/to/input_folder -o /path/to/result_folder -log /path/to/result_folder/log -c number_of_threads -al /path/to/astral-pro3</code>
+                                    <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="note">
+                                    <p><i class="fas fa-lightbulb"></i> <strong>Note:</strong> The astral-pro3 executable can be found in the downloaded and unzipped Astral-Pro3 folder under ASTER-Linux/bin/astral-pro3</p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <strong>Parameters Explained</strong>
+                                <ul>
+                                    <li><strong>-i</strong>: Path to the input folder containing your GenBank files</li>
+                                    <li><strong>-o</strong>: Path to the output folder where results will be saved</li>
+                                    <li><strong>-log</strong>: Path for the log file</li>
+                                    <li><strong>-c</strong>: Number of CPU threads to use</li>
+                                    <li><strong>-al</strong>: Path to the astral-pro3 executable</li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <strong>Upload Results</strong>
+                                <p>Once the pipeline completes, the output will include a Visualisation.json file that you can upload using the form on the left.</p>
+                            </li>
+                        </ol>
+                        <div class="important-note">
+                            <p><strong>Important:</strong> After running the pipeline, the Visualisation.json file will be located at:</p>
+                            <p class="file-path"><strong>/path/to/result_folder/signal_family/Final_Results/Visualisation.json</strong></p>
+                        </div>
+                        <h3><i class="fas fa-file-code"></i> Example Command</h3>
+                        <div class="code-block">
+                            <code>python PanBGC.py -i ~/data/genomes -o ~/results/analysis -log ~/results/analysis/pipeline.log -c 4 -al ~/tools/ASTER-Linux/bin/astral-pro3</code>
+                            <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer id="footer"></footer>
+</div>
+
+<!-- The order in which the following scripts are arranged plays an important role -->
+<!-- Make header with menu -->
+<script src="header/scripts/menu.js"></script>
+<script src="header/scripts/header.js"></script>
+<!-- Make footer with text -->
+<script src="footer/scripts/footer.js"></script>
+<!-- Load dataclass -->
+<script src="upload/scripts/user_vis.js"></script>
+<script src="data_loader/load_data_from_endpoint.js"></script>
+<!-- Make species dropdown menu -->
+<script src="select_species/scripts/generate_species.js"></script>
+<script src="select_species/scripts/dropdown_species.js"></script>
+
+<!-- Copy to clipboard functionality -->
+<script>
+function copyToClipboard(button) {
+    const codeBlock = button.previousElementSibling;
+    const textToCopy = codeBlock.textContent;
+    
+    navigator.clipboard.writeText(textToCopy).then(function() {
+        // Visual feedback
+        button.classList.add('copied');
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        
+        // Reset after 2 seconds
+        setTimeout(function() {
+            button.classList.remove('copied');
+            button.innerHTML = '<i class="fas fa-copy"></i>';
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PanBGC-DB | Database</title>
+
+    <link rel="stylesheet" href="global_definitions/stylesheets/global.css">
+    <link rel="stylesheet" href="global_definitions/stylesheets/homepage_logo.css">
+    <link rel="stylesheet" href="global_definitions/stylesheets/progress_bar.css">
+    <link rel="stylesheet" href="header/stylesheets/header.css">
+    <link rel="stylesheet" href="select_species/stylesheets/select_species.css">
+    <link rel="stylesheet" href="footer/stylesheets/footer.css">
+    <link rel="stylesheet" href="Overview/stylesheets/overview.css">
+    <!-- Add Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div id="page-container">
+    <div id="content-wrap">
+        <!--start of content wrapper, so footer is always on bottom-->
+        <!--homepage header-->
+        <header id="header">
+            <!-- Menu -->
+        </header>
+
+        <div class="main-content-area" style="margin-top: 40px;">
+            <!-- Tab Toggle Buttons -->
+            <div class="stats-toggle-container">
+                <div id="compound-toggle" class="stats-toggle-button active" onclick="toggleSearchView('compound')">
+                    Search by Compound
+                </div>
+                <div id="family-toggle" class="stats-toggle-button inactive" onclick="toggleSearchView('family')">
+                    Search by Family
+                </div>
+            </div>
+            
+            <div class="index_loading_bar_area">
+                <!-- Loading bar -->
+                <div>
+                    <div id="progressBarContainer">
+                        <div id="progressBar"></div>
+                    </div>
+                    <div id="dataContainer_progress"></div>
+                </div>
+                <div class="loader" id="loader">
+                    Loading...
+                </div>
+            </div>
+            
+            <!-- Tab Content Area -->
+            <div class="tab-content-wrapper">
+                <!-- Compound Search Container -->
+                <div id="compound-search-container" class="overview-container" style="display: none;">
+                    <!-- Content will be inserted by compounds.js -->
+                </div>
+                
+                <!-- Family Search Container -->
+                <div id="overview_table_area" class="overview-container">
+                    <!-- Content will be inserted by overview.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer id="footer"></footer>
+</div>
+
+<!-- The order in which the following scripts are arranged plays an important role -->
+<!-- Make header with menu -->
+<script src="header/scripts/menu.js"></script>
+<script src="header/scripts/header.js"></script>
+<!-- Make footer with text -->
+<script src="footer/scripts/footer.js"></script>
+<!-- Load dataclass -->
+<script src="data_loader/load_data_from_endpoint.js"></script>
+<!-- Make species dropdown menu -->
+<script src="select_species/scripts/generate_species.js"></script>
+<script src="select_species/scripts/dropdown_species.js"></script>
+<script src="Overview/scripts/overview.js"></script>
+<!-- Add compound search script -->
+<script src="Overview/scripts/compounds.js"></script>
+
+<!-- Tab toggle script -->
+<script>
+    function toggleSearchView(view) {
+        // Update toggle button states
+        document.getElementById('compound-toggle').className = view === 'compound' ? 
+            'stats-toggle-button active' : 'stats-toggle-button inactive';
+        document.getElementById('family-toggle').className = view === 'family' ? 
+            'stats-toggle-button active' : 'stats-toggle-button inactive';
+        
+        // Show/hide appropriate containers
+        document.getElementById('compound-search-container').style.display = 
+            view === 'compound' ? 'block' : 'none';
+        document.getElementById('overview_table_area').style.display = 
+            view === 'family' ? 'block' : 'none';
+        
+        // Load appropriate data if needed
+        if (view === 'compound') {
+            // Initialize compound search data if not already loaded
+            if (typeof loadCompoundData === 'function' && !window.compoundDataLoaded) {
+                loadCompoundData();
+            }
+        }
+    }
+    
+    // Initialize with compound view by default
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleSearchView('compound');
+    });
+</script>
+
+</body>
+</html>

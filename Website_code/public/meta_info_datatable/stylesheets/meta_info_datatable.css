@@ -1,0 +1,75 @@
+#dc_meta_info {
+    height: auto;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+.cluster_menu_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px 0;
+}
+
+#cluster_menu_details {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.cluster_button, #downloadButton_meta_info {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.cluster_button:hover, #downloadButton_meta_info:hover {
+    background-color: #45a049;
+}
+
+
+.dataTables_length {
+    display: none;
+}
+
+
+.dataTables_paginate {
+    text-align: right;
+    margin-top: 10px;
+}
+
+
+#mi_data_table tbody tr:nth-of-type(odd) {
+    background-color: #f9fafb;
+}
+
+#mi_data_table tbody tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+
+
+#mi_data_table th, 
+#mi_data_table td {
+    text-align: left !important;
+    padding-left: 10px;
+}
+
+
+#mi_data_table th:nth-child(4),
+#mi_data_table td:nth-child(4) {
+    text-align: left !important;
+}
+
+
+.dataTables_filter {
+    margin-left: 20px;
+}

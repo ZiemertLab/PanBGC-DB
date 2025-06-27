@@ -1,0 +1,18 @@
+
+#progressBarContainer {
+    position: relative;
+    width: 100%;
+    background-color: #f3f3f3;
+    border: 0px solid #ccc;
+}
+
+#progressBar {
+    width: 0%; 
+    height: 0px;
+    background-color: #ffffff;
+}
+
+
+#progressPercentage {
+    display: none;
+}

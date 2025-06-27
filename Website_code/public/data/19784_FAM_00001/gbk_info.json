@@ -1,0 +1,456 @@
+{
+    "data": [
+        {
+            "file_name": "BGC0000386.gbk",
+            "locus": "BGC0000386",
+            "organism": "Burkholderia thailandensis E264",
+            "definition": "Burkholderia thailandensis E264 chromosome I, complete sequence",
+            "accession": [
+                "BGC0000386"
+            ],
+            "protocluster_category": null,
+            "geneNr": 14,
+            "PKS_NRPS_prediction": null,
+            "Product": [],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "BTH_I2417",
+                    "orientation": "-",
+                    "domains": [
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "BTH_I2418",
+                    "orientation": "-",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "BTH_I2425",
+                    "orientation": "-",
+                    "domains": [
+                        "TauD"
+                    ]
+                }
+            ]
+        },
+        {
+            "file_name": "BGC0002408.gbk",
+            "locus": "BGC0002408",
+            "organism": "Collimonas pratensis",
+            "definition": "Collimonas pratensis strain PMB3(1) 743400019, whole genome shotgun sequence",
+            "accession": [
+                "BGC0002408"
+            ],
+            "protocluster_category": null,
+            "geneNr": 15,
+            "PKS_NRPS_prediction": null,
+            "Product": [],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "GN109_07660",
+                    "orientation": "+",
+                    "domains": [
+                        "TauD"
+                    ]
+                },
+                {
+                    "locus_tag": "GN109_07690",
+                    "orientation": "+",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "GN109_07695",
+                    "orientation": "+",
+                    "domains": [
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "PCP"
+                    ]
+                }
+            ]
+        },
+        {
+            "file_name": "NZ_CP008730.1.region001.gbk",
+            "locus": "NZ_CP008730",
+            "organism": "Burkholderia multivorans",
+            "definition": "Burkholderia multivorans strain DDS 15A-1 chromosome 1, complete sequence",
+            "accession": [
+                "NZ_CP008730"
+            ],
+            "protocluster_category": "NRPS",
+            "geneNr": 26,
+            "PKS_NRPS_prediction": "Ser, D-Asp, X",
+            "Product": [
+                "NRP-metallophore",
+                "NRPS"
+            ],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "DM80_RS15895_LOWER",
+                    "orientation": "-",
+                    "domains": [
+                        "Condensation_LCL"
+                    ]
+                },
+                {
+                    "locus_tag": "DM80_RS15900",
+                    "orientation": "-",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "DM80_RS15930",
+                    "orientation": "-",
+                    "domains": [
+                        "TauD"
+                    ]
+                }
+            ]
+        },
+        {
+            "file_name": "BGC0002569.gbk",
+            "locus": "BGC0002569",
+            "organism": "Burkholderia cenocepacia J2315",
+            "definition": "Burkholderia cenocepacia J2315 chromosome 1, complete genome",
+            "accession": [
+                "BGC0002569"
+            ],
+            "protocluster_category": null,
+            "geneNr": 15,
+            "PKS_NRPS_prediction": null,
+            "Product": [],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "BCAL1690",
+                    "orientation": "+",
+                    "domains": [
+                        "TauD"
+                    ]
+                },
+                {
+                    "locus_tag": "BCAL1696",
+                    "orientation": "+",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "BCAL1697",
+                    "orientation": "+",
+                    "domains": [
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "PCP"
+                    ]
+                }
+            ]
+        },
+        {
+            "file_name": "NZ_FPJP01000014.1.region001.gbk",
+            "locus": "NZ_FPJP01000014",
+            "organism": "Burkholderia sp. NFPP32",
+            "definition": "Burkholderia sp. NFPP32, whole genome shotgun sequence",
+            "accession": [
+                "NZ_FPJP01000014"
+            ],
+            "protocluster_category": "NRPS",
+            "geneNr": 36,
+            "PKS_NRPS_prediction": "X, D-Asp, Ser, X",
+            "Product": [
+                "NRP-metallophore",
+                "NRPS"
+            ],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "BT264_RS24645",
+                    "orientation": "+",
+                    "domains": [
+                        "TauD"
+                    ]
+                },
+                {
+                    "locus_tag": "BT264_RS24675",
+                    "orientation": "+",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "BT264_RS24680",
+                    "orientation": "+",
+                    "domains": [
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "PCP"
+                    ]
+                }
+            ]
+        },
+        {
+            "file_name": "NZ_CADEUJ010000005.1.region001.gbk",
+            "locus": "NZ_CADEUJ010000005",
+            "organism": "Burkholderia cenocepacia",
+            "definition": "Burkholderia cenocepacia strain BCC0199, whole genome shotgun sequence",
+            "accession": [
+                "NZ_CADEUJ010000005"
+            ],
+            "protocluster_category": "NRPS",
+            "geneNr": 32,
+            "PKS_NRPS_prediction": "X, Ser, D-Asp, X",
+            "Product": [
+                "NRP-metallophore",
+                "NRPS"
+            ],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "HWW63_RS08120",
+                    "orientation": "-",
+                    "domains": [
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "PP-binding"
+                    ]
+                },
+                {
+                    "locus_tag": "HWW63_RS08125",
+                    "orientation": "-",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "HWW63_RS08155",
+                    "orientation": "-",
+                    "domains": [
+                        "TauD"
+                    ]
+                }
+            ]
+        },
+        {
+            "file_name": "NZ_CADFDD010000029.1.region001.gbk",
+            "locus": "NZ_CADFDD010000029",
+            "organism": "Burkholderia aenigmatica",
+            "definition": "Burkholderia aenigmatica strain BCC0217, whole genome shotgun sequence",
+            "accession": [
+                "NZ_CADFDD010000029"
+            ],
+            "protocluster_category": "NRPS",
+            "geneNr": 27,
+            "PKS_NRPS_prediction": "X, Ser, D-Asp, X",
+            "Product": [
+                "NRP-metallophore",
+                "NRPS"
+            ],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "HWX61_RS39700",
+                    "orientation": "-",
+                    "domains": [
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "PP-binding"
+                    ]
+                },
+                {
+                    "locus_tag": "HWX61_RS39705",
+                    "orientation": "-",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "HWX61_RS39735",
+                    "orientation": "-",
+                    "domains": [
+                        "TauD"
+                    ]
+                }
+            ]
+        },
+        {
+            "file_name": "BGC0001721.gbk",
+            "locus": "BGC0001721",
+            "organism": "Burkholderia cepacia",
+            "definition": "Burkholderia cepacia strain 89 ornibactin biosynthetic gene cluster, partial sequence",
+            "accession": [
+                "BGC0001721"
+            ],
+            "protocluster_category": null,
+            "geneNr": 15,
+            "PKS_NRPS_prediction": null,
+            "Product": [],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "Unknown",
+                    "orientation": "-",
+                    "domains": [
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "PP-binding"
+                    ]
+                },
+                {
+                    "locus_tag": "Unknown",
+                    "orientation": "-",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "Unknown",
+                    "orientation": "-",
+                    "domains": [
+                        "TauD"
+                    ]
+                }
+            ]
+        },
+        {
+            "file_name": "NZ_CADEVD010000014.1.region001.gbk",
+            "locus": "NZ_CADEVD010000014",
+            "organism": "Burkholderia cepacia",
+            "definition": "Burkholderia cepacia strain BCC1058, whole genome shotgun sequence",
+            "accession": [
+                "NZ_CADEVD010000014"
+            ],
+            "protocluster_category": "NRPS",
+            "geneNr": 35,
+            "PKS_NRPS_prediction": "X, Ser, D-Asp, X",
+            "Product": [
+                "NRP-metallophore",
+                "NRPS"
+            ],
+            "NRPS_PKS_data": [
+                {
+                    "locus_tag": "HWW77_RS30525",
+                    "orientation": "-",
+                    "domains": [
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "HWW77_RS30530",
+                    "orientation": "-",
+                    "domains": [
+                        "AMP-binding",
+                        "PCP",
+                        "Condensation_LCL",
+                        "AMP-binding",
+                        "PCP",
+                        "Epimerization",
+                        "TIGR01720",
+                        "Condensation_DCL",
+                        "AMP-binding",
+                        "PCP"
+                    ]
+                },
+                {
+                    "locus_tag": "HWW77_RS30560",
+                    "orientation": "-",
+                    "domains": [
+                        "TauD"
+                    ]
+                }
+            ]
+        }
+    ]
+}

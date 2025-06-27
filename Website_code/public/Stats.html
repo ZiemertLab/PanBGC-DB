@@ -1,0 +1,3182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BGC Domain Analysis</title>
+  
+  <!-- Stylesheets for normal homepage elements-->
+  <link rel="stylesheet" href="global_definitions/stylesheets/global.css">
+  <link rel="stylesheet" href="global_definitions/stylesheets/homepage_logo.css">
+  <link rel="stylesheet" href="header/stylesheets/header.css">
+  <link rel="stylesheet" href="footer/Stylesheets/footer.css">
+  <!-- Add Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <!-- Add Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Load SheetJS and Chart.js libraries -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Add Plotly.js for boxplot visualization -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  
+  <style>
+    
+    #content-wrap {
+      padding-top: 0; 
+    }
+    
+    .main-content-area {
+      width: 98%;
+      max-width: 98%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .analysis-container {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      padding: 35px 28px 28px 28px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 20px;
+    }
+    
+    
+    #domain-bar-chart-container {
+      width: 100%;
+      height: 380px;
+      margin: 30px 0;
+      padding: 20px 20px 10px 20px; 
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow-x: auto;
+      overflow-y: hidden; 
+      position: relative;
+      
+      padding-top: 40px;
+    }
+    
+    #domain-bar-chart {
+      display: flex;
+      height: 300px;
+      align-items: flex-end;
+      padding-bottom: 10px; 
+      
+    }
+    
+    
+    #domain-bar-chart .bar {
+      display: inline-block;
+      width: 20px; 
+      margin: 0 2px; 
+      position: relative;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: background-color 0.2s ease;
+    }
+    
+    #domain-bar-chart .bar:hover {
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      filter: brightness(1.1); 
+    }
+    
+    
+    #domain-bar-chart .bar::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      z-index: 100;
+      width: max-content;
+      max-width: 250px;
+      top: -35px;
+      font-size: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+    }
+    
+    #domain-bar-chart .bar[data-tooltip-position="center"]::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    #domain-bar-chart .bar[data-tooltip-position="left"]::after {
+      right: 0;
+      transform: translateX(0);
+    }
+    
+    #domain-bar-chart .bar[data-tooltip-position="right"]::after {
+      left: 0;
+      transform: translateX(0);
+    }
+    
+    #domain-bar-chart .bar:hover::after {
+      opacity: 1;
+    }
+    
+    
+    #domain-bar-chart .bar-value.vertical {
+      position: absolute;
+      writing-mode: vertical-lr; 
+      transform: rotate(180deg); 
+      text-align: center;
+      font-size: 10px;
+      font-weight: bold;
+      color: white;
+      left: 0;
+      width: 100%;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); 
+    }
+    
+    
+    #domain-bar-chart::after {
+      content: '';
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: #ccc;
+    }
+    
+    
+    .y-grid-line {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.05);
+      z-index: 1;
+    }
+    
+    
+    .vertical-chart-legend {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .vertical-chart-legend .legend-color {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      border-radius: 3px;
+    }
+    
+    .analysis-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .header {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #dee2e6;
+      padding-bottom: 10px;
+    }
+    
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .control-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #495057;
+    }
+    
+    select, input, button {
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid #ced4da;
+      font-size: 14px;
+      min-width: 200px;
+    }
+    
+    .button {
+      background: linear-gradient(135deg, #307f5a, #2ecc71);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 8px rgba(46, 204, 113, 0.2);
+      min-width: auto;
+      cursor: pointer;
+    }
+    
+    .button:hover {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(46, 204, 113, 0.3);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    
+    th {
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      color: white;
+      padding: 15px 18px;
+      text-align: left;
+      font-weight: 600;
+      border: none;
+    }
+    
+    td {
+      background-color: #ffffff;
+      padding: 14px 18px;
+      border-bottom: 1px solid #ecf0f1;
+      transition: background-color 0.2s ease;
+    }
+    
+    tr:nth-child(even) td {
+      background-color: #f9fafb;
+    }
+    
+    tr:hover td {
+      background-color: #e8f6f3;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 18px;
+      color: #6c757d;
+    }
+    
+    .instructions {
+      background-color: #e7f3fe;
+      border-left: 6px solid #2196F3;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .chart-container {
+      margin-top: 30px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    
+    .domain-chart {
+      display: flex;
+      margin-bottom: 30px;
+    }
+    
+    .domain-info {
+      width: 200px;
+      padding-right: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .domain-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .domain-name:hover {
+      overflow: visible;
+      white-space: normal;
+    }
+    
+    .bar-group {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .bar-row {
+      display: flex;
+      align-items: center;
+      height: 25px;
+    }
+    
+    
+    .bar-row .bar-label {
+      width: 180px;
+      text-align: right;
+      padding-right: 10px;
+      font-size: 13px;
+      position: static; 
+      transform: none;
+    }
+    
+    .bar-container {
+      position: relative;
+      flex-grow: 1;
+      height: 100%;
+      background-color: #f0f0f0;
+    }
+    
+    
+    .bar-row .bar {
+      height: 100%;
+      position: relative;
+      transition: width 0.3s ease;
+      margin: 0;
+      border-radius: 0;
+    }
+    
+    .gene-bar {
+      background-color: #8884d8;
+    }
+    
+    .bgc-bar {
+      background-color: #82ca9d;
+    }
+    
+    .avg-bar {
+      background-color: #ffc658;
+    }
+    
+    
+    .bar-row .bar-value {
+      position: absolute;
+      right: 5px;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: right;
+      width: auto;
+    }
+    
+    
+    #domain-bar-chart .bar-label {
+      position: absolute;
+      bottom: -35px;
+      left: 0;
+      transform: rotate(-45deg);
+      transform-origin: left top;
+      font-size: 12px;
+      white-space: nowrap;
+      color: #333;
+      z-index: 5;
+    }
+    
+    .legend {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+    }
+    
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+    
+    #error-message {
+      color: red;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
+    .table-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .pagination {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .pagination button {
+      min-width: 40px;
+      background-color: #f8f9fa;
+      color: #333;
+      border: 1px solid #dee2e6;
+    }
+    
+    .pagination button.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    
+    .pagination button:hover:not(.active) {
+      background-color: #e9ecef;
+    }
+    
+    .alert-info {
+      display: flex;
+      align-items: center;
+      font-size: 22px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      padding: 12px 0;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .alert-info i {
+      margin-right: 10px;
+      color: #1abc9c;
+    }
+    
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+      margin-left: 15px;
+    }
+    
+    .tooltip-icon {
+      font-size: 18px;
+      color: #95a5a6;
+      cursor: help;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    
+    .tooltip-icon:hover {
+      color: #1abc9c;
+    }
+    
+    .tooltip-text {
+      visibility: hidden;
+      width: 250px;
+      background-color: #34495e;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 10px;
+      position: absolute;
+      z-index: 1000;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -125px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 14px;
+      font-weight: normal;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+    }
+    
+    .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #34495e transparent transparent transparent;
+    }
+    
+    .tooltip-container:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    
+    .stats-toggle-container {
+      width: 98%;
+      max-width: 98%;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+    }
+    
+    .stats-toggle-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0 5px;
+      min-width: 120px;
+    }
+    
+    .stats-toggle-button.active {
+      background: linear-gradient(135deg, #307f5a, #2ecc71);
+      color: white;
+      box-shadow: 0 3px 8px rgba(46, 204, 113, 0.2);
+    }
+    
+    .stats-toggle-button.inactive {
+      background: #f8f9fa;
+      color: #333;
+      border: 1px solid #dee2e6;
+    }
+    
+    .stats-toggle-button.inactive:hover {
+      background: #e9ecef;
+    }
+    
+    
+    .chart-wrapper {
+      width: 100%;
+      height: 450px; 
+      margin-bottom: 30px;
+    }
+    
+    
+    .category-scatter-wrapper {
+      height: 400px;
+    }
+    
+    .stats-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .card-title-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-right: 10px;
+    }
+    
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stats-card-sm {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .stats-card-lg {
+      flex: 2;
+      min-width: 400px;
+    }
+    
+    .stats-number {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #307f5a;
+    }
+    
+    .stats-label {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .gamma-type-selector {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .gamma-type-button {
+      padding: 8px 16px;
+      margin: 0 5px;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    
+    .gamma-type-button.active {
+      background: #307f5a;
+      color: white;
+      border-color: #307f5a;
+    }
+    
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 5px solid #307f5a;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-container {
+      text-align: center;
+      padding: 50px;
+    }
+    
+    
+    .chart-note {
+      color: #2c3e50;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    
+    
+    .correlation-info {
+      font-size: 14px;
+      color: #95a5a6;
+      cursor: help;
+      margin-left: 5px;
+    }
+    
+    .correlation-info:hover {
+      color: #1abc9c;
+    }
+  </style>
+</head>
+<body>
+  <div id="page-container">
+    <div id="content-wrap">
+      <!--homepage header-->
+      <header id="header">
+        <!-- Menu will be injected by header.js -->
+      </header>
+      
+      <div class="main-content-area" style="margin-top: 80px;">
+        <!-- New Toggle Buttons - SWAPPED ORDER -->
+        <div class="stats-toggle-container">
+          <div id="openess-toggle" class="stats-toggle-button active" onclick="toggleStatsView('openess')">
+            Openess Stats
+          </div>
+          <div id="gene-toggle" class="stats-toggle-button inactive" onclick="toggleStatsView('gene')">
+            Gene Stats
+          </div>
+        </div>
+        
+        <!-- Gene Stats Container (Original Content) -->
+        <div id="gene-stats-container" class="analysis-container" style="width: 98%; max-width: 98%; margin: 0 auto; display: none;">
+          <div class="alert-info">
+            <i class="fas fa-chart-bar"></i> BGC Domain Analysis
+            <div class="tooltip-container">
+              <i class="fas fa-question-circle tooltip-icon"></i>
+              <span class="tooltip-text">Analyze the domain distribution across BGC types using preloaded data.</span>
+            </div>
+          </div>
+          
+          <div id="error-message"></div>
+          
+          <div id="loading-message" class="loading">
+            Loading data...
+          </div>
+          
+          <div id="analysis-section" style="display: none;">
+            <div class="controls">
+              <div class="control-group">
+                <label for="bgc-select">BGC Type:</label>
+                <select id="bgc-select"></select>
+              </div>
+              
+              <div class="control-group">
+                <label for="sort-select">Sort By:</label>
+                <select id="sort-select">
+                  <option value="presence">Gene presence in families (%)</option>
+                  <option value="bgc">Presence in BGCs of type (%)</option>
+                  <option value="average">Average presence in family (%)</option>
+                </select>
+              </div>
+              
+              <div class="control-group">
+                <label for="chart-rows-select">Chart Domains:</label>
+                <select id="chart-rows-select">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+            </div>
+            
+            <div id="chart-section">
+              <h2 id="chart-title">Top Domains</h2>
+              
+              <div class="legend">
+                <div class="legend-item">
+                  <div class="legend-color" style="background-color: #8884d8;"></div>
+                  <div>Gene presence in families (%)</div>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color" style="background-color: #82ca9d;"></div>
+                  <div>Presence in BGCs of type (%)</div>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color" style="background-color: #ffc658;"></div>
+                  <div>Average presence in family (%)</div>
+                </div>
+              </div>
+              
+              <div class="chart-container">
+                <div id="domains-chart"></div>
+              </div>
+            </div>
+            
+            <!-- Bar Chart Section -->
+            <div id="bar-chart-section">
+              <div class="alert-info">
+                <i class="fas fa-chart-line"></i> Domain Distribution
+                <div class="tooltip-container">
+                  <i class="fas fa-question-circle tooltip-icon"></i>
+                  <span class="tooltip-text">Visual comparison of domain distribution with the highest values on the left.</span>
+                </div>
+              </div>
+              <div class="bar-chart-container" id="domain-bar-chart-container">
+                <div id="domain-bar-chart"></div>
+              </div>
+            </div>
+            
+            <div id="table-section">
+              <div class="table-controls">
+                <h2>Summary Table</h2>
+                <div class="control-group">
+                  <label for="table-rows-select">Table Entries:</label>
+                  <select id="table-rows-select" onchange="updateTableRows()">
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="all">All</option>
+                  </select>
+                </div>
+              </div>
+              <div id="data-table"></div>
+              <div id="pagination" class="pagination" style="margin-top: 15px;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Openess Stats Container (New Content with updated visualizations) -->
+        <div id="openess-stats-container" class="analysis-container" style="width: 98%; max-width: 98%; margin: 0 auto;">
+          <div class="alert-info">
+            <i class="fas fa-dna"></i> GCF Openess Analysis
+            <div class="tooltip-container">
+              <i class="fas fa-question-circle tooltip-icon"></i>
+              <span class="tooltip-text">Analysis of gene cluster family openness using Heaps' law gamma values.</span>
+            </div>
+          </div>
+          
+          <div id="openess-error-message" style="color: red; font-weight: bold; margin-top: 10px;"></div>
+          
+          <div id="openess-loading" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading openess data...</p>
+          </div>
+          
+          <div id="openess-content" style="display: none;">
+            <!-- Filter Controls -->
+            <div class="controls">
+              <div class="control-group">
+                <label for="protocluster-category-select">Protocluster Category:</label>
+                <select id="protocluster-category-select" onchange="updateOpenessFilters()">
+                  <option value="all" selected>All Categories</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+              </div>
+              
+              <div class="control-group">
+                <label for="gamma-type-select">Gamma Value of:</label>
+                <select id="gamma-type-select" onchange="updateOpenessFilters()">
+                  <option value="gamma_gene_accum" selected>Gene count</option>
+                  <option value="gamma_newGenes">BGC adds new gene</option>
+                  <option value="gamma_composition">Unique BGC composition</option>
+                </select>
+              </div>
+              
+              <div class="control-group">
+                <label for="min-family-size-select">Min Family Size:</label>
+                <select id="min-family-size-select" onchange="toggleCustomSizeInput(); updateOpenessFilters()">
+                  <option value="5" selected>>=5</option>
+                  <option value="10">>=10</option>
+                  <option value="25">>=25</option>
+                  <option value="50">>=50</option>
+                  <option value="100">>=100</option>
+                  <option value="custom">Custom</option>
+                </select>
+                <div id="custom-size-input-container" style="display: none; margin-top: 10px;">
+                  <input type="number" id="custom-family-size" min="1" value="5" style="width: 100px;" onchange="updateOpenessFilters()">
+                  <button class="button" style="min-width: auto; padding: 8px 12px;" onclick="applyCustomSize()">Apply</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Summary Stats Cards - ADDED 4TH CARD FOR AVERAGE FAMILY SIZE -->
+            <div class="stats-row">
+              <div class="stats-card stats-card-sm">
+                <div class="card-title">Average Gamma</div>
+                <div id="avg-gamma" class="stats-number">-</div>
+                <div class="stats-label">Mean value across filtered families</div>
+              </div>
+              <div class="stats-card stats-card-sm">
+                <div class="card-title">Median Gamma</div>
+                <div id="median-gamma" class="stats-number">-</div>
+                <div class="stats-label">Median value</div>
+              </div>
+              <div class="stats-card stats-card-sm">
+                <div class="card-title">Total Families</div>
+                <div id="total-families" class="stats-number">-</div>
+                <div class="stats-label">Number of gene cluster families</div>
+              </div>
+              <div class="stats-card stats-card-sm">
+                <div class="card-title">Average Family Size</div>
+                <div id="avg-family-size" class="stats-number">-</div>
+                <div class="stats-label">Average BGC count per family</div>
+              </div>
+            </div>
+            
+            <!-- Visualizations Section -->
+            <div class="stats-card">
+              <div class="card-title-container">
+                <div class="card-title">Distribution of Gamma Values</div>
+                <div class="tooltip-container">
+                  <i class="fas fa-question-circle tooltip-icon"></i>
+                  <span class="tooltip-text">Histogram showing the distribution of gamma values across families. Higher bars indicate more families with gamma values in that range.</span>
+                </div>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="gamma-histogram"></canvas>
+              </div>
+            </div>
+            
+            <div class="stats-card">
+              <div id="category-chart-title-container" class="card-title-container">
+                <div id="category-chart-title" class="card-title">Average Gamma by Category</div>
+                <div class="tooltip-container">
+                  <i class="fas fa-question-circle tooltip-icon"></i>
+                  <span id="category-chart-tooltip" class="tooltip-text">Comparison of average gamma values across different protocluster categories, sorted from highest to lowest.</span>
+                </div>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="category-avg-chart"></canvas>
+              </div>
+            </div>
+            
+            <!-- Gamma Values Boxplot Section - NEW -->
+            <div class="stats-card">
+              <div class="card-title-container">
+                <div class="card-title">Gamma Values Distribution Comparison</div>
+                <div class="tooltip-container">
+                  <i class="fas fa-question-circle tooltip-icon"></i>
+                  <span class="tooltip-text">Box plot comparing the distribution of all three gamma values. The box shows the interquartile range (25th to 75th percentile), the line inside shows the median, whiskers extend to 1.5x IQR, and dots show outliers.</span>
+                </div>
+              </div>
+              <div class="chart-wrapper" style="height: 350px;">
+                <div id="gamma-boxplot-chart"></div>
+              </div>
+            </div>
+            
+            <!-- Data Table Section -->
+            <div class="stats-card" style="margin-top: 30px;">
+              <div class="table-controls">
+                <div class="card-title">Summary Table</div>
+                <div class="control-group">
+                  <label for="openess-table-rows">Rows:</label>
+                  <select id="openess-table-rows" onchange="updateOpenessTable()">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="all">All</option>
+                  </select>
+                </div>
+              </div>
+              <div id="openess-table-container"></div>
+              <div id="openess-pagination" class="pagination" style="margin-top: 15px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <footer id="footer">
+      <!-- Footer content will be inserted by footer.js -->
+    </footer>
+  </div>
+
+  <!--the order in which the following scripts are arranged plays an important role-->
+  <!--make header with menu-->
+  <script src="header/scripts/menu.js"></script>
+  <script src="header/scripts/header.js"></script>
+  <!--make footer with text-->
+  <script src="footer/scripts/footer.js"></script>
+
+  <script>
+    // Global variables for Gene Stats
+    let workbook = null;
+    let bgcTypes = [];
+    let currentData = [];
+    let allSheetData = [];
+    let currentPage = 1;
+    let rowsPerPage = 10;
+    const EXCEL_FILE_PATH = "/data/BGC_Domain_Analysis.xlsx"; // Hardcoded path
+    
+    // Global variables for Openess Stats
+    let openessData = null;
+    let filteredOpenessData = [];
+    let categories = [];
+    let currentGammaType = 'gamma_gene_accum';
+    let openessCurrentPage = 1;
+    let openessRowsPerPage = 10;
+    const OPENESS_JSON_PATH = "/data/gamma_value_bgc_data.json"; // Hardcoded path for the JSON data
+    
+    // Variables for charts
+    let histogramChart = null;
+    let categoryAvgChart = null;
+    let categoryGammaComparisonChart = null;
+    let gammaBoxplotChart = null;
+    
+    // DOM elements for Gene Stats
+    const loadingMessage = document.getElementById('loading-message');
+    const analysisSection = document.getElementById('analysis-section');
+    const errorMessage = document.getElementById('error-message');
+    const bgcSelect = document.getElementById('bgc-select');
+    const sortSelect = document.getElementById('sort-select');
+    const chartRowsSelect = document.getElementById('chart-rows-select');
+    const tableRowsSelect = document.getElementById('table-rows-select');
+    const domainsChart = document.getElementById('domains-chart');
+    const dataTable = document.getElementById('data-table');
+    const chartTitle = document.getElementById('chart-title');
+    const pagination = document.getElementById('pagination');
+    const domainBarChart = document.getElementById('domain-bar-chart');
+    
+    // DOM elements for Openess Stats
+    const openessErrorMessage = document.getElementById('openess-error-message');
+    const openessLoading = document.getElementById('openess-loading');
+    const openessContent = document.getElementById('openess-content');
+    const openessTableContainer = document.getElementById('openess-table-container');
+    const openessPagination = document.getElementById('openess-pagination');
+    
+    // New toggle functionality - UPDATED DEFAULT VIEW
+    function toggleStatsView(view) {
+      // Update toggle button states
+      document.getElementById('gene-toggle').className = view === 'gene' ? 'stats-toggle-button active' : 'stats-toggle-button inactive';
+      document.getElementById('openess-toggle').className = view === 'openess' ? 'stats-toggle-button active' : 'stats-toggle-button inactive';
+      
+      // Show/hide appropriate containers
+      document.getElementById('gene-stats-container').style.display = view === 'gene' ? 'block' : 'none';
+      document.getElementById('openess-stats-container').style.display = view === 'openess' ? 'block' : 'none';
+      
+      // Load appropriate data if needed
+      if (view === 'gene') {
+        if (!workbook) {
+          loadDataFromPath();
+        }
+      } else if (view === 'openess') {
+        if (!openessData) {
+          loadOpenessData();
+        }
+      }
+    }
+    
+    // Event listeners for Gene Stats
+    bgcSelect.addEventListener('change', updateDisplayedData);
+    sortSelect.addEventListener('change', updateDisplayedData);
+    chartRowsSelect.addEventListener('change', updateDisplayedData);
+    
+    // Initialize data loading on page load - DEFAULT TO OPENESS STATS
+    document.addEventListener('DOMContentLoaded', function() {
+      toggleStatsView('openess'); // Default to openess view
+      loadOpenessData(); // Load openess data by default
+    });
+    
+    //
+    // GENE STATS FUNCTIONS
+    //
+    
+    // Load data from hardcoded path for Gene Stats
+    function loadDataFromPath() {
+      showLoading(true);
+      errorMessage.textContent = '';
+      
+      console.log("Attempting to load Excel file from:", EXCEL_FILE_PATH);
+      
+      // Use fetch to get the file
+      fetch(EXCEL_FILE_PATH)
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 404) {
+              throw new Error(`File not found at path: ${EXCEL_FILE_PATH}. Please check if the file exists.`);
+            } else {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+          }
+          return response.arrayBuffer();
+        })
+        .then(data => {
+          try {
+            const uint8Array = new Uint8Array(data);
+            workbook = XLSX.read(uint8Array, {
+              type: 'array',
+              cellStyles: true,
+              cellFormulas: true,
+              cellDates: true,
+              cellNF: true,
+              sheetStubs: true
+            });
+            
+            bgcTypes = workbook.SheetNames;
+            
+            if (bgcTypes.length === 0) {
+              throw new Error("Excel file contains no sheets");
+            }
+            
+            // Populate BGC type select dropdown
+            bgcSelect.innerHTML = '';
+            bgcTypes.forEach(type => {
+              const option = document.createElement('option');
+              option.value = type;
+              option.textContent = type;
+              bgcSelect.appendChild(option);
+            });
+            
+            // Reset pagination
+            currentPage = 1;
+            rowsPerPage = 10;
+            tableRowsSelect.value = rowsPerPage;
+            
+            // Switch to analysis view
+            analysisSection.style.display = 'block';
+            
+            // Update displayed data
+            updateDisplayedData();
+            
+            console.log("Successfully loaded Excel file with sheets:", bgcTypes);
+          } catch (err) {
+            console.error("Error reading Excel file:", err);
+            errorMessage.textContent = `Failed to read Excel file: ${err.message}. Make sure it's a valid Excel file.`;
+            showLoading(false);
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching file:", error);
+          errorMessage.textContent = `Failed to load data: ${error.message}`;
+          showLoading(false);
+        });
+    }
+    
+    // Update displayed data for Gene Stats
+    function updateDisplayedData() {
+      if (!workbook) return;
+      
+      const selectedBgcType = bgcSelect.value;
+      const sortByOption = sortSelect.value;
+      const showChartRowsCount = parseInt(chartRowsSelect.value);
+      
+      showLoading(true);
+      
+      try {
+        // Get the selected sheet
+        const sheet = workbook.Sheets[selectedBgcType];
+        if (!sheet) {
+          currentData = [];
+          allSheetData = [];
+          renderData();
+          showLoading(false);
+          return;
+        }
+        
+        // Convert sheet to JSON
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+        allSheetData = [...jsonData]; // Store all data for table pagination
+        
+        // Sort data
+        let sortedData;
+        if (sortByOption === 'presence') {
+          sortedData = jsonData.sort((a, b) => 
+            b['Gene presence in families (%)'] - a['Gene presence in families (%)']
+          );
+        } else if (sortByOption === 'bgc') {
+          sortedData = jsonData.sort((a, b) => 
+            b['Presence in BGCs of type (%)'] - a['Presence in BGCs of type (%)']
+          );
+        } else {
+          sortedData = jsonData.sort((a, b) => 
+            b['Average presence in family (%)'] - a['Average presence in family (%)']
+          );
+        }
+        
+        // Get top rows for chart
+        currentData = sortedData.slice(0, showChartRowsCount);
+        
+        // Reset to first page when changing data
+        currentPage = 1;
+        
+        // Render the data
+        renderData();
+        
+      } catch (err) {
+        console.error("Error processing data:", err);
+        errorMessage.textContent = "Error processing data. Please try again.";
+      }
+      
+      showLoading(false);
+    }
+    
+    // Update table rows for Gene Stats
+    function updateTableRows() {
+      rowsPerPage = tableRowsSelect.value === 'all' ? allSheetData.length : parseInt(tableRowsSelect.value);
+      currentPage = 1; // Reset to first page
+      renderDataTable();
+      updatePagination();
+    }
+    
+    // Helper function to get a readable label for the sort field
+    function getSortFieldLabel(sortOption) {
+      switch (sortOption) {
+        case 'presence':
+          return 'Gene presence in families (%)';
+        case 'bgc':
+          return 'Presence in BGCs of type (%)';
+        case 'average':
+          return 'Average presence in family (%)';
+        default:
+          return '';
+      }
+    }
+    
+    // Render vertical bar chart with improvements
+    function renderVerticalBarChart() {
+      domainBarChart.innerHTML = '';
+      
+      if (allSheetData.length === 0) {
+        domainBarChart.innerHTML = '<p>No data available</p>';
+        return;
+      }
+      
+      // Clone and sort ALL data, not just the limited currentData
+      const sortedData = [...allSheetData];
+      let sortField;
+      let barColor;
+      
+      // Set sort field and corresponding color
+      switch (sortSelect.value) {
+        case 'presence':
+          sortField = 'Gene presence in families (%)';
+          barColor = '#8884d8'; // Purple (matching gene presence in horizontal chart)
+          break;
+        case 'bgc':
+          sortField = 'Presence in BGCs of type (%)';
+          barColor = '#82ca9d'; // Green (matching BGC presence in horizontal chart)
+          break;
+        case 'average':
+          sortField = 'Average presence in family (%)';
+          barColor = '#ffc658'; // Yellow/orange (matching avg presence in horizontal chart)
+          break;
+      }
+      
+      sortedData.sort((a, b) => b[sortField] - a[sortField]);
+      
+      // Calculate bar width based on number of items
+      // We want bars to be thinner when there are more items
+      const barWidth = Math.max(10, Math.min(40, 2000 / sortedData.length));
+      const barMargin = Math.max(1, Math.min(5, 200 / sortedData.length));
+      
+      // Add y-axis grid lines
+      for (let i = 1; i <= 10; i++) {
+        const gridLine = document.createElement('div');
+        gridLine.className = 'y-grid-line';
+        gridLine.style.bottom = `${i * 30}px`;
+        domainBarChart.appendChild(gridLine);
+      }
+      
+      // Create a bar for each domain
+      sortedData.forEach((item, index) => {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.width = `${barWidth}px`;
+        bar.style.margin = `0 ${barMargin}px`;
+        bar.style.backgroundColor = barColor; // Set color based on sort selection
+        
+        // Calculate height as percentage of chart height (300px)
+        const percentage = item[sortField];
+        const barHeight = Math.max(5, Math.floor((percentage / 100) * 300));
+        bar.style.height = `${barHeight}px`;
+        
+        // Add vertical percentage label on the side of the bar
+        const barValue = document.createElement('div');
+        barValue.className = 'bar-value vertical';
+        barValue.textContent = `${percentage.toFixed(1)}%`;
+        
+        // Only show value for bars with enough height
+        if (barHeight < 20) {
+          barValue.style.display = 'none';
+        }
+        
+        bar.appendChild(barValue);
+        
+        // Add hidden label below bar (still in DOM for tooltip)
+        const barLabel = document.createElement('div');
+        barLabel.className = 'bar-label';
+        barLabel.textContent = item.Domain;
+        barLabel.title = item.Domain; // Add tooltip for truncated names
+        barLabel.style.visibility = 'hidden'; // Hide labels
+        
+        bar.appendChild(barLabel);
+        
+        // Add a data attribute to store the tooltip text
+        // (instead of using title attribute which shows browser's default tooltip)
+        bar.setAttribute('data-tooltip', `${item.Domain}: ${percentage.toFixed(1)}%`);
+        
+        // Calculate tooltip position logic based on bar index
+        // Bars near the left edge will have tooltips appear to the right
+        // Bars near the right edge will have tooltips appear to the left
+        // This prevents tooltips from being cut off
+        const tooltipPosition = index < sortedData.length * 0.1 ? 'right' : 
+                               index > sortedData.length * 0.9 ? 'left' : 
+                               'center';
+        bar.setAttribute('data-tooltip-position', tooltipPosition);
+        
+        domainBarChart.appendChild(bar);
+      });
+      
+      // Update chart container height if needed
+      document.getElementById('domain-bar-chart-container').style.height = '380px';
+      
+      // Make container width fit all bars
+      const totalWidth = (barWidth + (barMargin * 2)) * sortedData.length;
+      domainBarChart.style.width = `${totalWidth}px`;
+      domainBarChart.style.minWidth = `${totalWidth}px`;
+
+      // Add a legend for what's being shown
+      const legend = document.createElement('div');
+      legend.className = 'vertical-chart-legend';
+      legend.innerHTML = `<div class="legend-color" style="background-color: ${barColor};"></div> ${getSortFieldLabel(sortSelect.value)}`;
+      
+      const container = document.getElementById('domain-bar-chart-container');
+      // Clear any existing legend
+      const existingLegend = container.querySelector('.vertical-chart-legend');
+      if (existingLegend) {
+        container.removeChild(existingLegend);
+      }
+      container.insertBefore(legend, domainBarChart);
+    }
+    
+    // Render data to chart and table for Gene Stats
+    function renderData() {
+      // Keep the original title format
+      chartTitle.textContent = `Top ${chartRowsSelect.value} Domains for ${bgcSelect.value}`;
+      
+      // Render both charts and table
+      renderHorizontalBarChart();
+      renderVerticalBarChart();
+      renderDataTable();
+      
+      // Update pagination
+      updatePagination();
+    }
+    
+    // Render horizontal bar chart for Gene Stats
+    function renderHorizontalBarChart() {
+      domainsChart.innerHTML = '';
+      
+      if (currentData.length === 0) {
+        domainsChart.innerHTML = '<p>No data available</p>';
+        return;
+      }
+      
+      // Create chart with horizontal bars for each domain
+      currentData.forEach(item => {
+        // Create domain container
+        const domainChart = document.createElement('div');
+        domainChart.className = 'domain-chart';
+        
+        // Domain info section
+        const domainInfo = document.createElement('div');
+        domainInfo.className = 'domain-info';
+        
+        const domainName = document.createElement('div');
+        domainName.className = 'domain-name';
+        domainName.textContent = item.Domain;
+        domainName.title = item.Domain; // Add tooltip
+        domainInfo.appendChild(domainName);
+        
+        domainChart.appendChild(domainInfo);
+        
+        // Bar group section
+        const barGroup = document.createElement('div');
+        barGroup.className = 'bar-group';
+        
+        // Gene presence bar
+        const geneBarRow = document.createElement('div');
+        geneBarRow.className = 'bar-row';
+        
+        const geneLabel = document.createElement('div');
+        geneLabel.className = 'bar-label';
+        geneLabel.textContent = 'Gene presence:';
+        geneBarRow.appendChild(geneLabel);
+        
+        const geneBarContainer = document.createElement('div');
+        geneBarContainer.className = 'bar-container';
+        
+        const geneBar = document.createElement('div');
+        geneBar.className = 'bar gene-bar';
+        geneBar.style.width = `${item['Gene presence in families (%)']}%`;
+        
+        const geneValue = document.createElement('span');
+        geneValue.className = 'bar-value';
+        geneValue.textContent = `${item['Gene presence in families (%)'].toFixed(1)}%`;
+        geneBar.appendChild(geneValue);
+        
+        geneBarContainer.appendChild(geneBar);
+        geneBarRow.appendChild(geneBarContainer);
+        barGroup.appendChild(geneBarRow);
+        
+        // BGC presence bar
+        const bgcBarRow = document.createElement('div');
+        bgcBarRow.className = 'bar-row';
+        
+        const bgcLabel = document.createElement('div');
+        bgcLabel.className = 'bar-label';
+        bgcLabel.textContent = 'BGC presence:';
+        bgcBarRow.appendChild(bgcLabel);
+        
+        const bgcBarContainer = document.createElement('div');
+        bgcBarContainer.className = 'bar-container';
+        
+        const bgcBar = document.createElement('div');
+        bgcBar.className = 'bar bgc-bar';
+        bgcBar.style.width = `${item['Presence in BGCs of type (%)']}%`;
+        
+        const bgcValue = document.createElement('span');
+        bgcValue.className = 'bar-value';
+        bgcValue.textContent = `${item['Presence in BGCs of type (%)'].toFixed(1)}%`;
+        bgcBar.appendChild(bgcValue);
+        
+        bgcBarContainer.appendChild(bgcBar);
+        bgcBarRow.appendChild(bgcBarContainer);
+        barGroup.appendChild(bgcBarRow);
+        
+        // Average presence bar
+        const avgBarRow = document.createElement('div');
+        avgBarRow.className = 'bar-row';
+        
+        const avgLabel = document.createElement('div');
+        avgLabel.className = 'bar-label';
+        avgLabel.textContent = 'Avg family presence:';
+        avgBarRow.appendChild(avgLabel);
+        
+        const avgBarContainer = document.createElement('div');
+        avgBarContainer.className = 'bar-container';
+        
+        const avgBar = document.createElement('div');
+        avgBar.className = 'bar avg-bar';
+        avgBar.style.width = `${item['Average presence in family (%)']}%`;
+        
+        const avgValue = document.createElement('span');
+        avgValue.className = 'bar-value';
+        avgValue.textContent = `${item['Average presence in family (%)'].toFixed(1)}%`;
+        avgBar.appendChild(avgValue);
+        
+        avgBarContainer.appendChild(avgBar);
+        avgBarRow.appendChild(avgBarContainer);
+        barGroup.appendChild(avgBarRow);
+        
+        domainChart.appendChild(barGroup);
+        domainsChart.appendChild(domainChart);
+      });
+    }
+    
+    // Render data table for Gene Stats
+    function renderDataTable() {
+      dataTable.innerHTML = '';
+      
+      if (allSheetData.length === 0) {
+        dataTable.innerHTML = '<p>No data available</p>';
+        return;
+      }
+      
+      // Calculate pagination
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      let endIndex = startIndex + rowsPerPage;
+      if (endIndex > allSheetData.length) {
+        endIndex = allSheetData.length;
+      }
+      
+      // Get current page data
+      const pageData = allSheetData.slice(startIndex, endIndex);
+      
+      // Create table
+      const table = document.createElement('table');
+      
+      // Table header
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      
+      const headers = [
+        'Domain', 
+        'Gene Presence (%)', 
+        'BGC Presence (%)', 
+        'Avg. Family Presence (%)', 
+        'Files with Domain', 
+        'Total Files'
+      ];
+      
+      headers.forEach(headerText => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+      });
+      
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+      
+      // Table body
+      const tbody = document.createElement('tbody');
+      
+      pageData.forEach(item => {
+        const row = document.createElement('tr');
+        
+        // Domain
+        const domainCell = document.createElement('td');
+        domainCell.textContent = item.Domain;
+        row.appendChild(domainCell);
+        
+        // Gene Presence
+        const genePresenceCell = document.createElement('td');
+        genePresenceCell.textContent = `${item['Gene presence in families (%)'].toFixed(2)}%`;
+        row.appendChild(genePresenceCell);
+        
+        // BGC Presence
+        const bgcPresenceCell = document.createElement('td');
+        bgcPresenceCell.textContent = `${item['Presence in BGCs of type (%)'].toFixed(2)}%`;
+        row.appendChild(bgcPresenceCell);
+        
+        // Avg Family Presence
+        const avgPresenceCell = document.createElement('td');
+        avgPresenceCell.textContent = `${item['Average presence in family (%)'].toFixed(2)}%`;
+        row.appendChild(avgPresenceCell);
+        
+        // Files with Domain
+        const filesWithDomainCell = document.createElement('td');
+        filesWithDomainCell.textContent = item['Number of files with domain'];
+        row.appendChild(filesWithDomainCell);
+        
+        // Total Files
+        const totalFilesCell = document.createElement('td');
+        totalFilesCell.textContent = item['Total files for category'];
+        row.appendChild(totalFilesCell);
+        
+        tbody.appendChild(row);
+      });
+      
+      table.appendChild(tbody);
+      dataTable.appendChild(table);
+    }
+    
+    // Update pagination controls for Gene Stats
+    function updatePagination() {
+      pagination.innerHTML = '';
+      
+      if (allSheetData.length === 0 || tableRowsSelect.value === 'all') {
+        return;
+      }
+      
+      const totalPages = Math.ceil(allSheetData.length / rowsPerPage);
+      
+      // Add "Previous" button
+      const prevButton = document.createElement('button');
+      prevButton.textContent = '«';
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderDataTable();
+          updatePagination();
+        }
+      });
+      pagination.appendChild(prevButton);
+      
+      // Determine which page buttons to show
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, startPage + 4);
+      
+      if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+      }
+      
+      // Add page buttons
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.className = i === currentPage ? 'active' : '';
+        pageButton.addEventListener('click', () => {
+          currentPage = i;
+          renderDataTable();
+          updatePagination();
+        });
+        pagination.appendChild(pageButton);
+      }
+      
+      // Add "Next" button
+      const nextButton = document.createElement('button');
+      nextButton.textContent = '»';
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderDataTable();
+          updatePagination();
+        }
+      });
+      pagination.appendChild(nextButton);
+      
+      // Add page info
+      const pageInfo = document.createElement('span');
+      pageInfo.style.marginLeft = '10px';
+      pageInfo.textContent = `Page ${currentPage} of ${totalPages} (${allSheetData.length} total entries)`;
+      pagination.appendChild(pageInfo);
+    }
+    
+    // Show/hide loading message for Gene Stats
+    function showLoading(isLoading) {
+      loadingMessage.style.display = isLoading ? 'block' : 'none';
+    }
+    
+    
+    
+    
+    
+    // Load openess data from JSON file - Updated function
+    function loadOpenessData() {
+      openessLoading.style.display = 'block';
+      openessContent.style.display = 'none';
+      openessErrorMessage.textContent = '';
+      
+      console.log("Attempting to load openess JSON data from:", OPENESS_JSON_PATH);
+      
+      fetch(OPENESS_JSON_PATH)
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 404) {
+              throw new Error(`File not found at path: ${OPENESS_JSON_PATH}. Please check if the file exists.`);
+            } else {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+          }
+          return response.json();
+        })
+        .then(data => {
+          try {
+            // Store the data
+            openessData = Array.isArray(data) ? data : [data]; // Ensure data is an array
+            console.log("Successfully loaded openess data:", openessData.length, "entries");
+            
+            // Extract unique categories for the dropdown
+            populateCategoryDropdown();
+            
+            // Apply initial filters
+            updateOpenessFilters();
+            
+            // Initialize visualizations
+            updateHistogram();
+            updateCategoryAvgChart();
+            
+            // Hide loading, show content
+            openessLoading.style.display = 'none';
+            openessContent.style.display = 'block';
+          } catch (err) {
+            console.error("Error processing openess data:", err);
+            openessErrorMessage.textContent = `Failed to process openess data: ${err.message}`;
+            openessLoading.style.display = 'none';
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching openess data:", error);
+          openessErrorMessage.textContent = `Failed to load openess data: ${error.message}`;
+          openessLoading.style.display = 'none';
+        });
+    }
+    
+    // Helper function to safely parse gamma values
+    function parseGammaValue(value) {
+      if (value === null || value === undefined || value === 'none' || value === '-') {
+        return null;
+      }
+      const parsed = parseFloat(value);
+      return isNaN(parsed) ? null : parsed;
+    }
+    
+    // Populate the category dropdown with unique values
+    function populateCategoryDropdown() {
+      const categorySelect = document.getElementById('protocluster-category-select');
+      
+      // Extract unique categories
+      const uniqueCategories = [...new Set(openessData
+        .map(item => item.protocluster_category)
+        .filter(category => category && category !== 'null' && category !== '')
+      )].sort();
+      
+      // Store categories globally
+      categories = uniqueCategories;
+      
+      // Clear dropdown (except for the "All Categories" option)
+      while (categorySelect.options.length > 1) {
+        categorySelect.remove(1);
+      }
+      
+      // Add categories to dropdown
+      uniqueCategories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+      });
+    }
+    
+    // Toggle display of custom size input
+    function toggleCustomSizeInput() {
+      const minFamilySizeSelect = document.getElementById('min-family-size-select');
+      const customSizeContainer = document.getElementById('custom-size-input-container');
+      
+      if (minFamilySizeSelect.value === 'custom') {
+        customSizeContainer.style.display = 'block';
+      } else {
+        customSizeContainer.style.display = 'none';
+      }
+    }
+    
+    // Apply custom size from input
+    function applyCustomSize() {
+      updateOpenessFilters();
+    }
+    
+    // Update filters and refresh data display
+    function updateOpenessFilters() {
+      const categorySelect = document.getElementById('protocluster-category-select');
+      const gammaTypeSelect = document.getElementById('gamma-type-select');
+      const minFamilySizeSelect = document.getElementById('min-family-size-select');
+      const customSizeInput = document.getElementById('custom-family-size');
+      
+      // Get selected values
+      const selectedCategory = categorySelect.value;
+      currentGammaType = gammaTypeSelect.value;
+      let minFamilySize = parseInt(minFamilySizeSelect.value);
+      
+      // Handle custom size case
+      if (minFamilySizeSelect.value === 'custom') {
+        minFamilySize = parseInt(customSizeInput.value) || 1;
+      }
+      
+      // Filter data based on selections
+      filteredOpenessData = openessData.filter(item => {
+        // Filter by category if not "all"
+        const categoryMatch = selectedCategory === 'all' || item.protocluster_category === selectedCategory;
+        
+        // Filter by minimum family size
+        const sizeMatch = item.bgcCount >= minFamilySize;
+        
+        // Make sure gamma value is valid
+        const validGamma = item[currentGammaType] !== null && 
+                           item[currentGammaType] !== undefined && 
+                           item[currentGammaType] !== 'none' && 
+                           item[currentGammaType] !== '-';
+        
+        return categoryMatch && sizeMatch && validGamma;
+      });
+      
+      // Reset pagination
+      openessCurrentPage = 1;
+      
+      // Update statistics, visualizations, and table
+      updateOpenessStats();
+      updateHistogram();
+      updateCategoryAvgChart();
+      updateGammaBoxplotChart();
+      updateOpenessTable();
+      
+      // Check if we need to update the gamma comparison chart
+      checkAndUpdateGammaComparisonChart();
+    }
+    
+    // Update openess stats based on filtered data and current gamma type - MODIFIED TO ADD AVERAGE FAMILY SIZE
+    function updateOpenessStats() {
+      // Get filter values
+      const categorySelect = document.getElementById('protocluster-category-select');
+      const minFamilySizeSelect = document.getElementById('min-family-size-select');
+      const customSizeInput = document.getElementById('custom-family-size');
+      
+      const selectedCategory = categorySelect.value;
+      let minFamilySize = parseInt(minFamilySizeSelect.value);
+      
+      // Handle custom size case
+      if (minFamilySizeSelect.value === 'custom') {
+        minFamilySize = parseInt(customSizeInput.value) || 1;
+      }
+      
+      // Filter data based ONLY on category and min family size for total families count
+      const familiesForCount = openessData.filter(item => {
+        // Filter by category if not "all"
+        const categoryMatch = selectedCategory === 'all' || item.protocluster_category === selectedCategory;
+        
+        // Filter by minimum family size
+        const sizeMatch = item.bgcCount >= minFamilySize;
+        
+        return categoryMatch && sizeMatch;
+      });
+      
+      // Count unique families (regardless of gamma values)
+      const uniqueFamilies = new Set(familiesForCount.map(item => item['Family name']));
+      const totalFamilies = uniqueFamilies.size;
+      
+      // Calculate average family size from the same filtered data (NOT affected by gamma value)
+      const bgcCountsForAvg = familiesForCount
+        .map(item => item.bgcCount)
+        .filter(count => count !== null && count !== undefined);
+      
+      const avgFamilySize = bgcCountsForAvg.length > 0 
+        ? bgcCountsForAvg.reduce((acc, count) => acc + count, 0) / bgcCountsForAvg.length 
+        : 0;
+      
+      // Get valid gamma values from filtered data (this includes gamma filter)
+      const validGammaValues = filteredOpenessData
+        .map(item => parseGammaValue(item[currentGammaType]))
+        .filter(value => value !== null);
+      
+      if (validGammaValues.length === 0) {
+        document.getElementById('avg-gamma').textContent = 'N/A';
+        document.getElementById('median-gamma').textContent = 'N/A';
+        document.getElementById('total-families').textContent = totalFamilies; // Still show total families
+        document.getElementById('avg-family-size').textContent = avgFamilySize > 0 ? avgFamilySize.toFixed(1) : 'N/A';
+        return;
+      }
+      
+      // Calculate statistics
+      const sum = validGammaValues.reduce((acc, val) => acc + val, 0);
+      const avg = sum / validGammaValues.length;
+      
+      // Sort the values for median
+      const sortedValues = [...validGammaValues].sort((a, b) => a - b);
+      
+      // Calculate median
+      let median;
+      if (sortedValues.length % 2 === 0) {
+        // Even number of elements
+        const mid = sortedValues.length / 2;
+        median = (sortedValues[mid - 1] + sortedValues[mid]) / 2;
+      } else {
+        // Odd number of elements
+        median = sortedValues[Math.floor(sortedValues.length / 2)];
+      }
+      
+      // Update the stats in the UI
+      document.getElementById('avg-gamma').textContent = avg.toFixed(4);
+      document.getElementById('median-gamma').textContent = median.toFixed(4);
+      document.getElementById('total-families').textContent = totalFamilies;
+      document.getElementById('avg-family-size').textContent = avgFamilySize.toFixed(1);
+    }
+    
+    // Create histogram of gamma values
+    function updateHistogram() {
+      const ctx = document.getElementById('gamma-histogram').getContext('2d');
+      
+      // Get valid gamma values from filtered data
+      const validGammaValues = filteredOpenessData
+        .map(item => parseGammaValue(item[currentGammaType]))
+        .filter(value => value !== null);
+      
+      if (validGammaValues.length === 0) {
+        if (histogramChart) {
+          histogramChart.destroy();
+          histogramChart = null;
+        }
+        return;
+      }
+      
+      // Create bins for histogram
+      const binEdges = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, Infinity];
+      const bins = Array(binEdges.length - 1).fill(0);
+
+      validGammaValues.forEach(value => {
+        for (let i = 0; i < binEdges.length - 1; i++) {
+          if (value >= binEdges[i] && value < binEdges[i + 1]) {
+            bins[i]++;
+            break;
+          }
+        }
+      });
+      
+      // Create labels for the bins
+      const labels = binEdges.slice(0, -1).map((start, i) => {
+      const end = binEdges[i + 1];
+      return end === Infinity ? '>1' : `${start.toFixed(2)}–${end.toFixed(2)}`;
+    });
+      
+      // Get a title based on the current gamma type
+      let chartTitle;
+      switch (currentGammaType) {
+        case 'gamma_gene_accum':
+          chartTitle = 'Distribution of Gene Accumulation Gamma Values';
+          break;
+        case 'gamma_newGenes':
+          chartTitle = 'Distribution of New Genes Gamma Values';
+          break;
+        case 'gamma_composition':
+          chartTitle = 'Distribution of Composition Gamma Values';
+          break;
+        default:
+          chartTitle = 'Distribution of Gamma Values';
+      }
+      
+      // Chart configuration
+      const chartConfig = {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Number of Families',
+            data: bins,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                title: function(tooltipItems) {
+                  return tooltipItems[0].label;
+                },
+                label: function(context) {
+                  return `Count: ${context.raw} families`;
+                }
+              }
+            },
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Gamma Value Range'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Number of Families'
+              },
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+      };
+      
+      // Create or update chart
+      if (histogramChart) {
+        histogramChart.data.labels = labels;
+        histogramChart.data.datasets[0].data = bins;
+        histogramChart.update();
+      } else {
+        histogramChart = new Chart(ctx, chartConfig);
+      }
+    }
+    
+    // Function for the category average chart - now adaptive based on selection
+    function updateCategoryAvgChart() {
+      const ctx = document.getElementById('category-avg-chart').getContext('2d');
+      const categorySelect = document.getElementById('protocluster-category-select');
+      const selectedCategory = categorySelect.value;
+      
+      // Clear any existing chart
+      if (categoryAvgChart) {
+        categoryAvgChart.destroy();
+        categoryAvgChart = null;
+      }
+      
+      // Clear any previous notes
+      const chartWrapper = ctx.canvas.parentNode;
+      const existingNotes = chartWrapper.querySelectorAll('.chart-note');
+      existingNotes.forEach(note => note.remove());
+      
+      // If there's no data, exit early
+      if (filteredOpenessData.length === 0) {
+        return;
+      }
+      
+      // SINGLE CATEGORY SELECTED: Create a scatter plot of family size vs gamma value
+      if (selectedCategory !== 'all') {
+        // Update the chart title and tooltip
+        const titleContainer = document.getElementById('category-chart-title-container');
+        const chartTitle = document.getElementById('category-chart-title');
+        const chartTooltip = document.getElementById('category-chart-tooltip');
+        
+        // Update title
+        if (chartTitle) {
+          chartTitle.textContent = `Gamma Value vs Family Size for ${selectedCategory}`;
+        }
+        
+        // Update tooltip
+        if (chartTooltip) {
+          chartTooltip.textContent = `Scatter plot showing the relationship between family size (BGC count) and gamma value. The red trend line shows the correlation, with the correlation coefficient (r) measuring the strength of the relationship. Values close to 1 or -1 indicate a strong correlation, while values near 0 indicate a weak correlation.`;
+        }
+        
+        // Reduce the height for single category scatter plot
+        chartWrapper.style.height = '300px';
+        
+        // Prepare data for scatter plot
+        const scatterData = filteredOpenessData
+          .filter(item => parseGammaValue(item[currentGammaType]) !== null)
+          .map(item => ({
+            x: item.bgcCount,
+            y: parseGammaValue(item[currentGammaType]),
+            familyName: item['Family name'] || 'Unknown',
+            method: item[`method_${currentGammaType.replace('gamma_', '')}`] || 'Unknown'
+          }));
+        
+        if (scatterData.length === 0) {
+          const note = document.createElement('div');
+          note.className = 'chart-note';
+          note.style.textAlign = 'center';
+          note.style.fontStyle = 'italic';
+          note.style.marginTop = '20px';
+          note.textContent = `No valid data available for ${selectedCategory} with the current filters`;
+          chartWrapper.appendChild(note);
+          return;
+        }
+        
+        // Calculate statistics for trendline
+        const sumX = scatterData.reduce((acc, point) => acc + point.x, 0);
+        const sumY = scatterData.reduce((acc, point) => acc + point.y, 0);
+        const sumXY = scatterData.reduce((acc, point) => acc + (point.x * point.y), 0);
+        const sumXX = scatterData.reduce((acc, point) => acc + (point.x * point.x), 0);
+        const n = scatterData.length;
+        
+        // Linear regression: y = mx + b
+        const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) || 0;
+        const intercept = (sumY - slope * sumX) / n || 0;
+        
+        // Calculate correlation coefficient (r)
+        const sumYY = scatterData.reduce((acc, point) => acc + (point.y * point.y), 0);
+        const numerator = (n * sumXY) - (sumX * sumY);
+        const denominator = Math.sqrt(((n * sumXX) - (sumX * sumX)) * ((n * sumYY) - (sumY * sumY)));
+        const r = denominator ? numerator / denominator : 0;
+        
+        // Prepare trendline data
+        const minX = Math.min(...scatterData.map(point => point.x));
+        const maxX = Math.max(...scatterData.map(point => point.x));
+        const trendline = [
+          { x: minX, y: minX * slope + intercept },
+          { x: maxX, y: maxX * slope + intercept }
+        ];
+        
+        // Create a scatter plot
+        categoryAvgChart = new Chart(ctx, {
+          type: 'scatter',
+          data: {
+            datasets: [
+              {
+                label: 'Families',
+                data: scatterData,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                pointRadius: 4, // Smaller dots
+                pointHoverRadius: 6, // Smaller hover state
+                pointStyle: 'circle'
+              },
+              {
+                label: 'Trendline',
+                data: trendline,
+                type: 'line',
+                fill: false,
+                borderColor: 'rgba(255, 99, 132, 0.8)',
+                borderWidth: 2,
+                pointRadius: 0,
+                pointHoverRadius: 0
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    if (context.datasetIndex === 0) { // Scatter points
+                      const point = scatterData[context.dataIndex];
+                      return [
+                        `Family: ${point.familyName}`,
+                        `BGC Count: ${point.x}`,
+                        `Gamma Value: ${point.y.toFixed(4)}`,
+                        `Method: ${point.method}`
+                      ];
+                    } else { // Trendline points
+                      return [];
+                    }
+                  }
+                }
+              },
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Family Size (BGC Count)'
+                },
+                beginAtZero: true
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Gamma Value'
+                },
+                beginAtZero: true
+              }
+            }
+          }
+        });
+        
+        // Add correlation and regression info
+        const statsNote = document.createElement('div');
+        statsNote.className = 'chart-note';
+        statsNote.style.textAlign = 'center';
+        statsNote.style.marginTop = '10px';
+        // Include an info icon with tooltip for correlation explanation
+        statsNote.innerHTML = `<strong>Correlation (r): ${r.toFixed(4)}</strong> <i class="fas fa-info-circle correlation-info" title="Correlation coefficient measures the strength and direction of relationship between family size and gamma value. Values range from -1 (perfect negative correlation) to +1 (perfect positive correlation), with 0 indicating no correlation."></i> | Regression: y = ${slope.toFixed(4)}x + ${intercept.toFixed(4)}`;
+        chartWrapper.appendChild(statsNote);
+        
+        // Add sample size info
+        const countNote = document.createElement('div');
+        countNote.className = 'chart-note';
+        countNote.style.textAlign = 'center';
+        countNote.style.fontStyle = 'italic';
+        countNote.style.marginTop = '5px';
+        countNote.textContent = `${scatterData.length} families shown`;
+        chartWrapper.appendChild(countNote);
+      } 
+      // ALL CATEGORIES: Create a bar chart of average gamma values by category
+      else {
+        // Update the chart title and tooltip
+        const titleContainer = document.getElementById('category-chart-title-container');
+        const chartTitle = document.getElementById('category-chart-title');
+        const chartTooltip = document.getElementById('category-chart-tooltip');
+        
+        // Update title
+        if (chartTitle) {
+          chartTitle.textContent = 'Average Gamma by Category';
+        }
+        
+        // Update tooltip
+        if (chartTooltip) {
+          chartTooltip.textContent = 'Comparison of average gamma values across different protocluster categories, sorted from highest to lowest.';
+        }
+        
+        // Restore the original height for the category chart
+        chartWrapper.style.height = '450px';
+        
+        // Group data by category
+        const categoryStats = new Map();
+        
+        filteredOpenessData.forEach(item => {
+          const gamma = parseGammaValue(item[currentGammaType]);
+          if (gamma === null) return;
+          
+          const category = item.protocluster_category || 'Unknown';
+          if (!categoryStats.has(category)) {
+            categoryStats.set(category, {
+              values: [],
+              sum: 0,
+              count: 0
+            });
+          }
+          
+          const stats = categoryStats.get(category);
+          stats.values.push(gamma);
+          stats.sum += gamma;
+          stats.count++;
+        });
+        
+        // Calculate average for each category
+        const categoryData = [];
+        
+        categoryStats.forEach((stats, category) => {
+          if (stats.count === 0) return;
+          
+          const avg = stats.sum / stats.count;
+          
+          // Calculate median
+          const sortedValues = [...stats.values].sort((a, b) => a - b);
+          let median;
+          if (sortedValues.length % 2 === 0) {
+            const mid = sortedValues.length / 2;
+            median = (sortedValues[mid - 1] + sortedValues[mid]) / 2;
+          } else {
+            median = sortedValues[Math.floor(sortedValues.length / 2)];
+          }
+          
+          categoryData.push({
+            category,
+            avg,
+            median,
+            count: stats.count,
+            min: Math.min(...stats.values),
+            max: Math.max(...stats.values)
+          });
+        });
+        
+        // Sort categories by average gamma value (highest first)
+        categoryData.sort((a, b) => b.avg - a.avg);
+        
+        if (categoryData.length === 0) {
+          return;
+        }
+        
+        // Prepare data for the chart
+        const labels = categoryData.map(d => `${d.category} (n=${d.count})`);
+        const averages = categoryData.map(d => d.avg);
+        
+        // Generate a nice color gradient for the bars
+        const backgroundColors = categoryData.map((_, index) => {
+          // Generate colors along a gradient for visual appeal
+          const hue = 200 - (index / categoryData.length * 150); // Blue to green gradient
+          return `hsla(${hue}, 75%, 60%, 0.7)`;
+        });
+        
+        // Calculate the height needed for the chart based on number of categories
+        // Ensure at least 35px per category for readability
+        const neededHeight = Math.max(450, categoryData.length * 35);
+        
+        // Adjust the chart wrapper height dynamically
+        ctx.canvas.parentNode.style.height = `${neededHeight}px`;
+        
+        // Chart configuration
+        const chartConfig = {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Average Gamma',
+              data: averages,
+              backgroundColor: backgroundColors,
+              borderColor: backgroundColors.map(color => color.replace('0.7', '1')),
+              borderWidth: 1
+            }]
+          },
+          options: {
+            indexAxis: 'y', // Horizontal bar chart
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const index = context.dataIndex;
+                    const data = categoryData[index];
+                    return [
+                      `Average: ${data.avg.toFixed(4)}`,
+                      `Median: ${data.median.toFixed(4)}`,
+                      `Min: ${data.min.toFixed(4)}`,
+                      `Max: ${data.max.toFixed(4)}`,
+                      `Count: ${data.count} families`
+                    ];
+                  }
+                }
+              },
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Average Gamma Value'
+                },
+                beginAtZero: true
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Category'
+                },
+                ticks: {
+                  // Ensure all labels are visible
+                  autoSkip: false,
+                  font: {
+                    size: 11 // Slightly smaller font to fit more labels if needed
+                  }
+                }
+              }
+            }
+          }
+        };
+        
+        // Create new chart
+        categoryAvgChart = new Chart(ctx, chartConfig);
+      }
+    }
+    
+    // Update the openess data table - Modified to use filteredOpenessData
+    function updateOpenessTable() {
+      openessTableContainer.innerHTML = '';
+      
+      if (!filteredOpenessData || filteredOpenessData.length === 0) {
+        openessTableContainer.innerHTML = '<p>No data available for the selected filters</p>';
+        openessPagination.innerHTML = '';
+        return;
+      }
+      
+      const rowsSelect = document.getElementById('openess-table-rows');
+      openessRowsPerPage = rowsSelect.value === 'all' ? filteredOpenessData.length : parseInt(rowsSelect.value);
+      
+      // Calculate pagination
+      const startIndex = (openessCurrentPage - 1) * openessRowsPerPage;
+      let endIndex = startIndex + openessRowsPerPage;
+      if (endIndex > filteredOpenessData.length) {
+        endIndex = filteredOpenessData.length;
+      }
+      
+      // Sort data based on current gamma type
+      const sortedData = [...filteredOpenessData].sort((a, b) => {
+        const valueA = parseGammaValue(a[currentGammaType]) || 0;
+        const valueB = parseGammaValue(b[currentGammaType]) || 0;
+        return valueB - valueA; // Sort in descending order
+      });
+      
+      // Get current page data
+      const pageData = sortedData.slice(startIndex, endIndex);
+      
+      // Create table
+      const table = document.createElement('table');
+      
+      // Table header
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      
+      const headers = [
+        'Family Name',
+        'BGC Count',
+        'Protocluster Category',
+        'Gamma Value',
+        'Method'
+      ];
+      
+      headers.forEach(headerText => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+      });
+      
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+      
+      // Table body
+      const tbody = document.createElement('tbody');
+      
+      pageData.forEach(item => {
+        const row = document.createElement('tr');
+        
+        // Family Name
+        const familyNameCell = document.createElement('td');
+        familyNameCell.textContent = item['Family name'] || 'N/A';
+        row.appendChild(familyNameCell);
+        
+        // BGC Count
+        const bgcCountCell = document.createElement('td');
+        bgcCountCell.textContent = item.bgcCount !== undefined ? item.bgcCount : 'N/A';
+        row.appendChild(bgcCountCell);
+        
+        // Protocluster Category
+        const categoryCell = document.createElement('td');
+        categoryCell.textContent = item.protocluster_category || 'N/A';
+        row.appendChild(categoryCell);
+        
+        // Gamma Value (based on current selection)
+        const gammaCell = document.createElement('td');
+        const gammaValue = parseGammaValue(item[currentGammaType]);
+        gammaCell.textContent = gammaValue !== null ? gammaValue.toFixed(4) : 'N/A';
+        row.appendChild(gammaCell);
+        
+        // Method
+        const methodCell = document.createElement('td');
+        let methodKey;
+        switch (currentGammaType) {
+          case 'gamma_gene_accum':
+            methodKey = 'method_gene_accum';
+            break;
+          case 'gamma_newGenes':
+            methodKey = 'method_newGenes';
+            break;
+          case 'gamma_composition':
+            methodKey = 'method_composition';
+            break;
+          default:
+            methodKey = null;
+        }
+        methodCell.textContent = methodKey && item[methodKey] ? item[methodKey] : 'N/A';
+        row.appendChild(methodCell);
+        
+        tbody.appendChild(row);
+      });
+      
+      table.appendChild(tbody);
+      openessTableContainer.appendChild(table);
+      
+      // Update pagination
+      updateOpenessPagination();
+    }
+    
+    // Update pagination for the openess table - Modified to use filteredOpenessData
+    function updateOpenessPagination() {
+      openessPagination.innerHTML = '';
+      
+      const rowsSelect = document.getElementById('openess-table-rows');
+      if (filteredOpenessData.length === 0 || rowsSelect.value === 'all') {
+        return;
+      }
+      
+      const totalPages = Math.ceil(filteredOpenessData.length / openessRowsPerPage);
+      
+      // Add "Previous" button
+      const prevButton = document.createElement('button');
+      prevButton.textContent = '«';
+      prevButton.disabled = openessCurrentPage === 1;
+      prevButton.addEventListener('click', () => {
+        if (openessCurrentPage > 1) {
+          openessCurrentPage--;
+          updateOpenessTable();
+        }
+      });
+      openessPagination.appendChild(prevButton);
+      
+      // Determine which page buttons to show
+      let startPage = Math.max(1, openessCurrentPage - 2);
+      let endPage = Math.min(totalPages, startPage + 4);
+      
+      if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+      }
+      
+      // Add page buttons
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.className = i === openessCurrentPage ? 'active' : '';
+        pageButton.addEventListener('click', () => {
+          openessCurrentPage = i;
+          updateOpenessTable();
+        });
+        openessPagination.appendChild(pageButton);
+      }
+      
+      // Add "Next" button
+      const nextButton = document.createElement('button');
+      nextButton.textContent = '»';
+      nextButton.disabled = openessCurrentPage === totalPages;
+      nextButton.addEventListener('click', () => {
+        if (openessCurrentPage < totalPages) {
+          openessCurrentPage++;
+          updateOpenessTable();
+        }
+      });
+      openessPagination.appendChild(nextButton);
+      
+      // Add page info
+      const pageInfo = document.createElement('span');
+      pageInfo.style.marginLeft = '10px';
+      pageInfo.textContent = `Page ${openessCurrentPage} of ${totalPages} (${filteredOpenessData.length} total entries)`;
+      openessPagination.appendChild(pageInfo);
+    }
+    
+    // Create Gamma Values Comparison by Category chart - only for "all" categories
+    function createCategoryGammaComparisonChart() {
+      const canvas = document.getElementById('category-gamma-comparison-chart');
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      
+      // Destroy existing chart if it exists
+      if (categoryGammaComparisonChart) {
+        categoryGammaComparisonChart.destroy();
+        categoryGammaComparisonChart = null;
+      }
+      
+      // Group data by protocluster category
+      const categoryGammaData = {};
+      
+      filteredOpenessData.forEach(item => {
+        if (!item.protocluster_category) return;
+        
+        const category = item.protocluster_category;
+        if (!categoryGammaData[category]) {
+          categoryGammaData[category] = {
+            totalItems: 0,
+            validGeneAccum: 0,
+            validNewGenes: 0,
+            validComposition: 0,
+            sumGeneAccum: 0,
+            sumNewGenes: 0,
+            sumComposition: 0
+          };
+        }
+        
+        // Increment counters and sums for each gamma type if available
+        categoryGammaData[category].totalItems++;
+        
+        const geneAccum = parseGammaValue(item.gamma_gene_accum);
+        if (geneAccum !== null) {
+          categoryGammaData[category].validGeneAccum++;
+          categoryGammaData[category].sumGeneAccum += geneAccum;
+        }
+        
+        const newGenes = parseGammaValue(item.gamma_newGenes);
+        if (newGenes !== null) {
+          categoryGammaData[category].validNewGenes++;
+          categoryGammaData[category].sumNewGenes += newGenes;
+        }
+        
+        const composition = parseGammaValue(item.gamma_composition);
+        if (composition !== null) {
+          categoryGammaData[category].validComposition++;
+          categoryGammaData[category].sumComposition += composition;
+        }
+      });
+      
+      // Calculate averages for each category and gamma type
+      Object.keys(categoryGammaData).forEach(category => {
+        const data = categoryGammaData[category];
+        data.avgGeneAccum = data.validGeneAccum > 0 ? data.sumGeneAccum / data.validGeneAccum : null;
+        data.avgNewGenes = data.validNewGenes > 0 ? data.sumNewGenes / data.validNewGenes : null;
+        data.avgComposition = data.validComposition > 0 ? data.sumComposition / data.validComposition : null;
+      });
+      
+      // Filter out categories with too few items (optional, adjust as needed)
+      const minItemsPerCategory = 3;
+      const validCategories = Object.keys(categoryGammaData)
+        .filter(category => categoryGammaData[category].totalItems >= minItemsPerCategory)
+        .sort((a, b) => {
+          // Sort by gene accumulation gamma (or change to sort by another metric)
+          const valA = categoryGammaData[a].avgGeneAccum || 0;
+          const valB = categoryGammaData[b].avgGeneAccum || 0;
+          return valB - valA;
+        });
+      
+      // Prepare data for Chart.js
+      const chartData = {
+        labels: validCategories.map(category => `${category} (n=${categoryGammaData[category].totalItems})`),
+        datasets: [
+          {
+            label: 'Gene Count Gamma',
+            data: validCategories.map(category => categoryGammaData[category].avgGeneAccum),
+            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'New Gene Gamma',
+            data: validCategories.map(category => categoryGammaData[category].avgNewGenes),
+            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'Composition Gamma',
+            data: validCategories.map(category => categoryGammaData[category].avgComposition),
+            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }
+        ]
+      };
+      
+      // Configure and create chart
+      categoryGammaComparisonChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const value = context.raw;
+                  return value !== null && value !== undefined
+                    ? `${context.dataset.label}: ${value.toFixed(4)}`
+                    : `${context.dataset.label}: No data`;
+                }
+              }
+            },
+            title: {
+              display: true,
+              text: 'Comparison of Gamma Values by Protocluster Category',
+              font: {
+                size: 16
+              }
+            },
+            subtitle: {
+              display: true,
+              text: 'Higher values indicate more open gene cluster families',
+              font: {
+                size: 14,
+                style: 'italic'
+              },
+              padding: {
+                bottom: 10
+              }
+            }
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: 'Average Gamma Value'
+              },
+              beginAtZero: true,
+              suggestedMax: 1.0
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Protocluster Category'
+              },
+              ticks: {
+                autoSkip: false,
+                maxRotation: 45,
+                minRotation: 45
+              },
+            }
+          }
+        }
+      });
+    }
+    
+    // Add the gamma comparison chart for "all categories" view only
+    function addCategoryComparisonChart() {
+      // Check if it already exists
+      if (document.getElementById('category-gamma-comparison-chart')) {
+        createCategoryGammaComparisonChart();
+        return;
+      }
+      
+      // Create card for the chart
+      const card = document.createElement('div');
+      card.className = 'stats-card';
+      card.id = 'gamma-comparison-card';
+      
+      // Create title container
+      const titleContainer = document.createElement('div');
+      titleContainer.className = 'card-title-container';
+      
+      // Add title
+      const title = document.createElement('div');
+      title.className = 'card-title';
+      title.textContent = 'Gamma Values Comparison by Category';
+      
+      // Add tooltip
+      const tooltipContainer = document.createElement('div');
+      tooltipContainer.className = 'tooltip-container';
+      
+      const tooltipIcon = document.createElement('i');
+      tooltipIcon.className = 'fas fa-question-circle tooltip-icon';
+      
+      const tooltipText = document.createElement('span');
+      tooltipText.className = 'tooltip-text';
+      tooltipText.textContent = 'Direct comparison of all three gamma metrics across protocluster categories. Higher values indicate more "open" gene cluster families, meaning new members are more likely to bring novel genetic content.';
+      
+      tooltipContainer.appendChild(tooltipIcon);
+      tooltipContainer.appendChild(tooltipText);
+      
+      titleContainer.appendChild(title);
+      titleContainer.appendChild(tooltipContainer);
+      
+      // Create chart wrapper
+      const chartWrapper = document.createElement('div');
+      chartWrapper.className = 'chart-wrapper';
+      
+      // Create canvas for chart
+      const canvas = document.createElement('canvas');
+      canvas.id = 'category-gamma-comparison-chart';
+      
+      // Assemble the card
+      chartWrapper.appendChild(canvas);
+      card.appendChild(titleContainer);
+      card.appendChild(chartWrapper);
+      
+      // Find the appropriate insertion point - insert after the category avg chart
+      const categoryAvgChart = document.getElementById('category-avg-chart');
+      if (categoryAvgChart) {
+        const categoryStatsCard = categoryAvgChart.closest('.stats-card');
+        categoryStatsCard.parentNode.insertBefore(card, categoryStatsCard.nextSibling);
+      } else {
+        // Fallback - add to end of content
+        document.getElementById('openess-content').appendChild(card);
+      }
+      
+      // Create the chart
+      createCategoryGammaComparisonChart();
+    }
+    
+    // Create boxplot chart for gamma values comparison using Plotly
+    function updateGammaBoxplotChart() {
+      const plotDiv = document.getElementById('gamma-boxplot-chart');
+      if (!plotDiv) return;
+      
+      // Collect all gamma values from filtered data
+      const gammaData = {
+        'Gene Count': [],
+        'New Gene': [],
+        'Composition': []
+      };
+      
+      filteredOpenessData.forEach(item => {
+        const geneAccum = parseGammaValue(item.gamma_gene_accum);
+        if (geneAccum !== null) {
+          gammaData['Gene Count'].push(geneAccum);
+        }
+        
+        const newGenes = parseGammaValue(item.gamma_newGenes);
+        if (newGenes !== null) {
+          gammaData['New Gene'].push(newGenes);
+        }
+        
+        const composition = parseGammaValue(item.gamma_composition);
+        if (composition !== null) {
+          gammaData['Composition'].push(composition);
+        }
+      });
+      
+      // Create traces for Plotly boxplot
+      const traces = [];
+      const colors = ['#4BC0C0', '#36A2EB', '#FF6384'];
+      
+      Object.keys(gammaData).forEach((gammaType, index) => {
+        if (gammaData[gammaType].length > 0) {
+          traces.push({
+            y: gammaData[gammaType],
+            type: 'box',
+            name: gammaType,
+            notched: false, // Remove the triangles
+            boxpoints: 'outliers',
+            marker: {
+              color: colors[index],
+              size: 6,
+              outliercolor: colors[index]
+            },
+            line: {
+              width: 2
+            },
+            boxmean: false, // Don't show mean diamond
+            hovertemplate: 
+              '<b>%{fullData.name}</b><br>' +
+              'Max: %{y[5]:.4f}<br>' +
+              'Q3: %{y[4]:.4f}<br>' +
+              'Median: %{y[3]:.4f}<br>' +
+              'Q1: %{y[2]:.4f}<br>' +
+              'Min: %{y[1]:.4f}<br>' +
+              'Count: ' + gammaData[gammaType].length +
+              '<extra></extra>',
+            hoverlabel: {
+              bgcolor: 'white',
+              bordercolor: colors[index],
+              font: {
+                family: 'Roboto, sans-serif',
+                size: 12
+              }
+            }
+          });
+        }
+      });
+      
+      // Perform Wilcoxon rank-sum tests for all pairs
+      const testResults = performWilcoxonPairwiseTests(gammaData);
+      const annotations = createStatisticalAnnotations(testResults, gammaData);
+      
+      // Layout configuration
+      const layout = {
+        title: '',
+        yaxis: {
+          title: 'Gamma Value',
+          zeroline: true,
+          gridcolor: 'rgb(233, 233, 233)'
+        },
+        xaxis: {
+          title: 'Gamma Type'
+        },
+        showlegend: false,
+        margin: {
+          l: 60,
+          r: 60, // Reduced back to center the boxplots
+          t: 100, // Increased top margin for annotations
+          b: 60
+        },
+        paper_bgcolor: 'white',
+        plot_bgcolor: 'white',
+        font: {
+          family: 'Roboto, sans-serif',
+          size: 12,
+          color: '#2c3e50'
+        },
+        hovermode: 'closest',
+        annotations: annotations.annotations,
+        shapes: annotations.shapes
+      };
+      
+      // Config for Plotly
+      const config = {
+        responsive: true,
+        displayModeBar: false
+      };
+      
+      // Create the plot
+      Plotly.newPlot(plotDiv, traces, layout, config);
+    }
+    
+    // Perform Wilcoxon rank-sum test for all pairs
+    function performWilcoxonPairwiseTests(gammaData) {
+      const groupNames = Object.keys(gammaData);
+      const pairwiseResults = [];
+      
+      // Perform Wilcoxon test for each pair
+      for (let i = 0; i < groupNames.length - 1; i++) {
+        for (let j = i + 1; j < groupNames.length; j++) {
+          const group1 = gammaData[groupNames[i]];
+          const group2 = gammaData[groupNames[j]];
+          
+          // Perform Wilcoxon rank-sum test (Mann-Whitney U test)
+          const pValue = wilcoxonRankSum(group1, group2);
+          
+          pairwiseResults.push({
+            group1: i,
+            group2: j,
+            pValue: pValue
+          });
+        }
+      }
+      
+      return { pairwise: pairwiseResults };
+    }
+    
+    // Wilcoxon rank-sum test (Mann-Whitney U test)
+    function wilcoxonRankSum(group1, group2) {
+      // Combine all values with group labels
+      const combined = [];
+      group1.forEach(val => combined.push({ value: val, group: 1 }));
+      group2.forEach(val => combined.push({ value: val, group: 2 }));
+      
+      // Sort and assign ranks
+      combined.sort((a, b) => a.value - b.value);
+      
+      // Handle ties when assigning ranks
+      let i = 0;
+      while (i < combined.length) {
+        let j = i;
+        // Find all tied values
+        while (j < combined.length && combined[j].value === combined[i].value) {
+          j++;
+        }
+        
+        // Assign average rank to all tied values
+        const avgRank = (i + 1 + j) / 2;
+        for (let k = i; k < j; k++) {
+          combined[k].rank = avgRank;
+        }
+        
+        i = j;
+      }
+      
+      // Calculate sum of ranks for each group
+      let sumRank1 = 0;
+      let sumRank2 = 0;
+      
+      combined.forEach(item => {
+        if (item.group === 1) {
+          sumRank1 += item.rank;
+        } else {
+          sumRank2 += item.rank;
+        }
+      });
+      
+      // Calculate U statistics
+      const n1 = group1.length;
+      const n2 = group2.length;
+      const U1 = sumRank1 - (n1 * (n1 + 1)) / 2;
+      const U2 = sumRank2 - (n2 * (n2 + 1)) / 2;
+      
+      // Use the smaller U value
+      const U = Math.min(U1, U2);
+      
+      // Calculate mean and standard deviation of U
+      const meanU = (n1 * n2) / 2;
+      const stdU = Math.sqrt((n1 * n2 * (n1 + n2 + 1)) / 12);
+      
+      // Continuity correction and z-score
+      const z = (U - meanU + 0.5) / stdU;
+      
+      // Calculate two-tailed p-value
+      const pValue = 2 * (1 - normalCDF(Math.abs(z)));
+      
+      return pValue;
+    }
+    
+    // Calculate ranks with tie handling
+    function calculateRanks(data) {
+      const sorted = data.map((value, index) => ({ value, index }))
+        .sort((a, b) => a.value - b.value);
+      
+      const ranks = new Array(data.length);
+      let i = 0;
+      
+      while (i < sorted.length) {
+        let j = i;
+        while (j < sorted.length && sorted[j].value === sorted[i].value) {
+          j++;
+        }
+        
+        const avgRank = (i + 1 + j) / 2;
+        for (let k = i; k < j; k++) {
+          ranks[sorted[k].index] = avgRank;
+        }
+        
+        i = j;
+      }
+      
+      return ranks;
+    }
+    
+    // Calculate tie correction factor
+    function calculateTieCorrection(ranks, n) {
+      const ties = {};
+      ranks.forEach(rank => {
+        ties[rank] = (ties[rank] || 0) + 1;
+      });
+      
+      let tieSum = 0;
+      Object.values(ties).forEach(t => {
+        if (t > 1) {
+          tieSum += t * t * t - t;
+        }
+      });
+      
+      return 1 - tieSum / (n * n * n - n);
+    }
+    
+    // Simple implementation of chi-square CDF
+    function chisquareCDF(x, df) {
+      // Using simple approximation for chi-square distribution
+      // This is a simplified version - for production, use a proper statistics library
+      return gammaCDF(x / 2, df / 2);
+    }
+    
+    // Simplified gamma CDF (for chi-square calculation)
+    function gammaCDF(x, alpha) {
+      // Very simplified approximation - replace with proper implementation
+      if (x <= 0) return 0;
+      if (x >= alpha * 10) return 1;
+      
+      // Use normal approximation for large alpha
+      if (alpha > 30) {
+        const mean = alpha;
+        const variance = alpha;
+        const z = (x - mean) / Math.sqrt(variance);
+        return normalCDF(z);
+      }
+      
+      // Simple series approximation for small alpha
+      let sum = 0;
+      let term = 1;
+      for (let k = 0; k < 50; k++) {
+        term *= x / (alpha + k);
+        sum += term;
+      }
+      
+      return sum * Math.exp(-x + alpha * Math.log(x) - logGamma(alpha));
+    }
+    
+    // Normal CDF approximation
+    function normalCDF(x) {
+      const a1 = 0.254829592;
+      const a2 = -0.284496736;
+      const a3 = 1.421413741;
+      const a4 = -1.453152027;
+      const a5 = 1.061405429;
+      const p = 0.3275911;
+      
+      const sign = x < 0 ? -1 : 1;
+      x = Math.abs(x) / Math.sqrt(2.0);
+      
+      const t = 1.0 / (1.0 + p * x);
+      const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+      
+      return 0.5 * (1.0 + sign * y);
+    }
+    
+    // Log gamma function approximation
+    function logGamma(x) {
+      // Stirling's approximation
+      return (x - 0.5) * Math.log(x) - x + 0.5 * Math.log(2 * Math.PI);
+    }
+    
+    // Perform Dunn's test for pairwise comparison
+    function performDunnTest(group1Data, group2Data, allData, groups, ranks, groupIndex1, groupIndex2) {
+      const n = allData.length;
+      const n1 = group1Data.length;
+      const n2 = group2Data.length;
+      
+      // Calculate mean ranks for each group
+      let sumRank1 = 0;
+      let sumRank2 = 0;
+      
+      ranks.forEach((rank, index) => {
+        if (groups[index] === groupIndex1) sumRank1 += rank;
+        if (groups[index] === groupIndex2) sumRank2 += rank;
+      });
+      
+      const meanRank1 = sumRank1 / n1;
+      const meanRank2 = sumRank2 / n2;
+      
+      // Calculate standard error
+      const se = Math.sqrt((n * (n + 1) / 12) * (1/n1 + 1/n2));
+      
+      // Calculate z-statistic
+      const z = Math.abs(meanRank1 - meanRank2) / se;
+      
+      // Calculate p-value (two-tailed)
+      const pValue = 2 * (1 - normalCDF(z));
+      
+      return pValue;
+    }
+    
+    // Create statistical annotations for the plot
+    function createStatisticalAnnotations(testResults, gammaData) {
+      const annotations = [];
+      const shapes = [];
+      
+      // Get max values for positioning
+      const allValues = [];
+      Object.values(gammaData).forEach(group => {
+        allValues.push(...group);
+      });
+      const maxValue = Math.max(...allValues);
+      const yOffset = maxValue * 0.08; // Increased spacing (8% of max value)
+      
+      // Position annotations above the highest point
+      let currentY = maxValue + yOffset * 3; // More space at top
+      
+      // Add pairwise comparisons in specific order: Gene Count-Composition at top
+      const comparisons = [
+        { x1: 0, x2: 2, pair: testResults.pairwise.find(p => (p.group1 === 0 && p.group2 === 2)) }, // Gene Count vs Composition (TOP)
+        { x1: 0, x2: 1, pair: testResults.pairwise.find(p => (p.group1 === 0 && p.group2 === 1)) }, // Gene Count vs New Gene
+        { x1: 1, x2: 2, pair: testResults.pairwise.find(p => (p.group1 === 1 && p.group2 === 2)) }  // New Gene vs Composition
+      ];
+      
+      comparisons.forEach((comp, index) => {
+        if (comp.pair) {
+          const sig = getSignificanceSymbol(comp.pair.pValue);
+          if (sig) {
+            const yPos = currentY - (index * yOffset * 2.5); // Increased vertical spacing
+            
+            // Add connecting line
+            shapes.push({
+              type: 'line',
+              x0: comp.x1,
+              y0: yPos,
+              x1: comp.x2,
+              y1: yPos,
+              line: {
+                color: 'black',
+                width: 1
+              }
+            });
+            
+            // Add vertical ticks
+            shapes.push({
+              type: 'line',
+              x0: comp.x1,
+              y0: yPos - yOffset * 0.3,
+              x1: comp.x1,
+              y1: yPos,
+              line: {
+                color: 'black',
+                width: 1
+              }
+            });
+            
+            shapes.push({
+              type: 'line',
+              x0: comp.x2,
+              y0: yPos - yOffset * 0.3,
+              x1: comp.x2,
+              y1: yPos,
+              line: {
+                color: 'black',
+                width: 1
+              }
+            });
+            
+            // Add significance symbol only
+            annotations.push({
+              x: (comp.x1 + comp.x2) / 2,
+              y: yPos + yOffset * 0.5,
+              text: sig,
+              showarrow: false,
+              font: {
+                size: 16,
+                color: 'black'
+              }
+            });
+          }
+        }
+      });
+      
+      // Add legend using absolute positioning
+      const legendX = 2.6; // Position closer to the plot
+      const legendY = maxValue * 0.9; // Position relative to max value
+      const legendSpacing = maxValue * 0.08; // Much larger spacing between items
+      
+      annotations.push({
+        x: legendX,
+        y: legendY,
+        text: '<b>Significance:</b>',
+        showarrow: false,
+        xanchor: 'left',
+        yanchor: 'top',
+        xref: 'x',
+        yref: 'y',
+        font: {
+          size: 16, // Larger font
+          color: 'black',
+          family: 'Arial, sans-serif'
+        }
+      });
+      
+      const legendItems = [
+        '*** = p < 0.001',
+        '**  = p < 0.01',
+        '*   = p < 0.05',
+        'ns  = p ≥ 0.05'
+      ];
+      
+      legendItems.forEach((item, index) => {
+        annotations.push({
+          x: legendX,
+          y: legendY - legendSpacing * (index + 1),
+          text: item,
+          showarrow: false,
+          xanchor: 'left',
+          yanchor: 'top',
+          xref: 'x',
+          yref: 'y',
+          font: {
+            size: 15, // Larger font
+            color: 'black',
+            family: 'Arial, sans-serif'
+          }
+        });
+      });
+      
+      return { annotations, shapes };
+    }
+    
+    // Get significance symbol based on p-value
+    function getSignificanceSymbol(pValue) {
+      if (pValue < 0.001) return '***';
+      if (pValue < 0.01) return '**';
+      if (pValue < 0.05) return '*';
+      return 'ns'; // Not significant
+    }
+    
+    function checkAndUpdateGammaComparisonChart() {
+      const categorySelect = document.getElementById('protocluster-category-select');
+      const selectedCategory = categorySelect.value;
+      const comparisonCard = document.getElementById('gamma-comparison-card');
+      
+      // Only show gamma comparison chart when "all categories" is selected
+      if (selectedCategory === 'all') {
+        // Add/update the comparison chart if not exists
+        if (!comparisonCard) {
+          addCategoryComparisonChart();
+        } else {
+          createCategoryGammaComparisonChart();
+          comparisonCard.style.display = 'block';
+        }
+      } else if (comparisonCard) {
+        // Hide the comparison chart if a specific category is selected
+        comparisonCard.style.display = 'none';
+        // Destroy the chart if it exists to free up resources
+        if (categoryGammaComparisonChart) {
+          categoryGammaComparisonChart.destroy();
+          categoryGammaComparisonChart = null;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
