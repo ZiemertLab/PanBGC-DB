@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
     <style>
-        
+        /* Basic structure styles */
         #content-wrap {
             background-color: #f5f7fa;
         }
@@ -26,10 +26,10 @@
             gap: 2%;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 90px 15px 20px 15px; 
+            padding: 90px 15px 20px 15px; /* Reduced from 120px to 90px */
         }
 
-        
+        /* SIDEBAR STYLES - Ultra simple approach */
         .doc-sidebar {
             background: #ffffff;
             border-radius: 12px;
@@ -37,7 +37,7 @@
             padding: 28px;
             height: fit-content;
             position: sticky;
-            top: 80px; 
+            top: 80px; /* Reduced from 100px to 80px */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -62,7 +62,7 @@
             color: #1abc9c;
         }
 
-        
+        /* Very basic sidebar list styling */
         .doc-menu {
             list-style-type: none;
             padding: 0;
@@ -94,7 +94,7 @@
             padding-left: 12px;
         }
 
-        
+        /* Submenu styling */
         .doc-submenu {
             list-style-type: none;
             padding-left: 16px;
@@ -116,7 +116,7 @@
             border-left: 2px solid #1abc9c;
         }
 
-        
+        /* Main content area */
         .doc-content {
             background: #ffffff;
             border-radius: 12px;
@@ -132,13 +132,13 @@
         }
 
         .doc-content-inner {
-            max-height: calc(100vh - 120px); 
+            max-height: calc(100vh - 120px); /* Adjusted for reduced top spacing */
             overflow-y: auto;
             padding-right: 15px;
             scroll-behavior: smooth;
         }
 
-        
+        /* Scrollbar styling */
         .doc-content-inner::-webkit-scrollbar {
             width: 8px;
         }
@@ -158,7 +158,7 @@
             background-color: #7f8c8d;
         }
 
-        
+        /* Content styling */
         .doc-welcome {
             color: #2c3e50;
             font-size: 24px;
@@ -207,7 +207,7 @@
             margin-bottom: 15px;
         }
 
-        
+        /* Note box styling */
         .doc-note {
             background-color: rgba(33, 150, 243, 0.1);
             border-left: 4px solid #2196F3;
@@ -217,7 +217,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
-        
+        /* Code box styling */
         .doc-code-container {
             position: relative;
             margin: 20px 0;
@@ -262,7 +262,7 @@
             box-shadow: 0 3px 8px rgba(22, 160, 133, 0.3);
         }
 
-        
+        /* Video container */
         .doc-video {
             width: 100%;
             margin: 25px 0;
@@ -277,7 +277,7 @@
             border-radius: 8px;
         }
 
-        
+        /* Responsive adjustments */
         @media (max-width: 991px) {
             .doc-container {
                 grid-template-columns: 100%;
@@ -338,28 +338,31 @@
                                 <li><a href="#upload-sub2" class="doc-nav-link">Setting core cutoff</a></li>
                                 <li><a href="#upload-sub2b" class="doc-nav-link">GCF Openness</a></li>
                                 <li><a href="#upload-sub3" class="doc-nav-link">Gene Presence / absence map</a></li>
-                                <li><a href="#upload-sub4" class="doc-nav-link">Phylogenetic tree</a></li>
+                                <li><a href="#upload-sub4" class="doc-nav-link">Visual Cluster Comparison</a></li>
+                                <li><a href="#upload-sub5" class="doc-nav-link">Phylogenetic tree</a></li>
+                                <li><a href="#upload-sub6" class="doc-nav-link">Module Composition Comparison</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#species" class="doc-nav-link">Selecting Species</a>
+                            <a href="#species" class="doc-nav-link">Statistics</a>
                             <ul class="doc-submenu">
-                                <li><a href="#species-sub1" class="doc-nav-link">Filter Options</a></li>
-                                <li><a href="#species-sub2" class="doc-nav-link">Taxonomy View</a></li>
+                                <li><a href="#species-sub1" class="doc-nav-link">Openness Stats</a></li>
+                                <li><a href="#species-sub2" class="doc-nav-link">Gene Stats</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#analysis" class="doc-nav-link">Analyzing Results</a>
+                            <a href="#analysis" class="doc-nav-link">Query</a>
                             <ul class="doc-submenu">
-                                <li><a href="#analysis-sub1" class="doc-nav-link">Visualization</a></li>
-                                <li><a href="#analysis-sub2" class="doc-nav-link">Statistical Reports</a></li>
+                                <li><a href="#analysis-sub1" class="doc-nav-link">BGC Upload and Matching</a></li>
                             </ul>
+                        </li>
+                        <li>
+                            <a href="#visualization" class="doc-nav-link">Visualisation</a>
                         </li>
                         <li>
                             <a href="#contact" class="doc-nav-link">Contact</a>
                             <ul class="doc-submenu">
                                 <li><a href="#contact-sub1" class="doc-nav-link">Support</a></li>
-                                <li><a href="#contact-sub2" class="doc-nav-link">Community</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -377,17 +380,16 @@
                         <p>The PanBGC-DB is a tool/database containing bacterial clusters from antiSMASH-DB as well as curated clusters from MIBiG. The PanBGC-DB uses BiGSLICE and BiGSCAPE 2.0 clustered BGCs to create a dynamic visualization to investigate similarities and differences within a GCF. It adapts analysis used in pangenomics to a Biosynthetic gene cluster level.</p>
                         
                         <h3 id="intro-sub2"><i class="fas fa-chevron-right"></i> Features</h3>
-                        <p>The PanBGC-DB provides a range of features for comprehensive BGC analysis:</p>
+                        <p>The PanBGC-DB provides key features for comprehensive BGC analysis:</p>
                         <ul>
-                            <li>Dynamic visualization of Gene Cluster Families</li>
-                            <li>Integration with multiple annotation databases</li>
-                            <li>Adjustable core cutoff parameters</li>
-                            <li>Statistical analysis of GCF openess</li>
-                            <li>Phylogenetic tree visualization</li>
-                            <li>Statistical analysis tools</li>
+                            <li>Navigate over 80,000 precalculated GCFs</li>
+                            <li>Link your cluster to the best matching family</li>
+                            <li>Create the same analysis for your own defined GCF</li>
                         </ul>
                         
                         <h2 id="upload"><i class="fas fa-laptop-code"></i> How to use the Database</h2>
+                        
+                        <p>Users can discover the database in multiple ways: by searching for specific compounds to see where clusters from MIBiG (Minimum Information about a Biosynthetic Gene Cluster) have been placed into families, or by freely browsing all available Gene Cluster Families (GCFs). This dual approach allows both targeted searches for known natural products and exploratory analysis of the entire biosynthetic landscape captured in the database.</p>
                         
                         <h3 id="upload-sub1"><i class="fas fa-chevron-right"></i> Select Annotation Database</h3>
                         <p>
@@ -441,15 +443,6 @@
                             By fine-tuning the core cutoff, users can explore variations in gene presence across clusters, helping to identify 
                             conserved and variable regions within a <strong>Gene Cluster Family (GCF)</strong>.
                         </p>
-                        
-                        <div class="doc-note">
-                            <p><strong>Note:</strong> The information is also displayed in a table format further down the page for more detailed analysis.</p>
-                        </div>
-                        
-                        <p>
-                            <strong>Tip:</strong> Adjusting the core cutoff can reveal subtle differences in gene content between clusters. 
-                            Use this feature to focus on highly conserved genes or to explore accessory gene diversity within your dataset.
-                        </p>
 
                         <!-- NEW SECTION: GCF Openness -->
                         <h3 id="upload-sub2b"><i class="fas fa-chevron-right"></i> GCF Openness</h3>
@@ -500,35 +493,25 @@
                             <li><strong>γ &gt; 0.6:</strong> The GCF is <strong>open</strong> — high gene diversity, with new genes continuing to emerge.</li>
                         </ul>
 
-                        <div class="doc-note">
-                            <p><strong>Note:</strong> Higher γ values suggest ongoing evolution or the presence of rare, strain-specific genes.</p>
-                        </div>
-
                         <h4><strong>How is the γ value calculated?</strong></h4>
 
                         <p>
-                            To calculate openness, PanBGC-DB performs <strong>100 random simulations</strong> per GCF:
+                            The order of the BGCs is randomly shuffled and then added one by one into the dataset, with the number of <em>unique</em> genes or gene compositions discovered recorded at each step.
                         </p>
 
-                        <ol>
-                            <li>BGCs are randomly shuffled.</li>
-                            <li>They are added one by one into the dataset.</li>
-                            <li>At each step, the number of <em>unique</em> genes or gene compositions discovered is recorded.</li>
-                        </ol>
-
                         <p>
-                            These 100 discovery curves are averaged into a single curve, which is then fitted to Heaps’ Law. The resulting <strong>γ</strong> value is used to determine openness.
+                            These discovery curves are averaged into a single curve, which is then fitted to Heaps' Law. The resulting <strong>γ</strong> value is used to determine openness.
                         </p>
 
-                        <h4><strong>What defines a “new” BGC?</strong></h4>
+                        <h4><strong>What openness is calculated?</strong></h4>
 
                         <p>
-                            Depending on your selection, PanBGC-DB offers two methods for defining uniqueness:
+                            Openness is calculated for two different parameters:
                         </p>
 
                         <ul>
-                            <li><strong>Newly added genes:</strong> A BGC is counted as “new” if it contains <em>at least one gene</em> (Ortholog Group ID) not found in any previously added BGCs.</li>
-                            <li><strong>Unique gene composition:</strong> A BGC is only considered “new” if its entire set of genes differs from all previous BGCs.</li>
+                            <li><strong>New gene added to family:</strong> Adding a BGC to the family increases the gene pool by contributing at least one gene (Ortholog Group ID) not found in any previously added BGCs.</li>
+                            <li><strong>Unique gene composition:</strong> Adding a BGC to the family reveals a unique gene composition where the entire set of genes differs from all previous BGCs.</li>
                         </ul>
 
                         <p>
@@ -550,61 +533,37 @@
                         <p>
                             The method that produces the best fit (highest R²) is used, and its name is displayed along with the openness value. A higher R² indicates a better representation of the discovery curve by the model.
                         </p>
-
-                        <div class="doc-note">
-                            <p><strong>Tip:</strong> Open GCFs (γ &gt; 0.6) often indicate high ecological or functional diversity. Closed GCFs (γ &lt; 0.3) may represent core metabolic functions or conserved biosynthetic pathways.</p>
-                        </div>
                         <!-- END NEW SECTION -->
 
                         <h3 id="upload-sub3"><i class="fas fa-chevron-right"></i> Gene Presence / Absence Map</h3>
                         <p>The <strong>Gene Presence-Absence map</strong> provides a clear way to see which genes are found in each Biosynthetic Gene Cluster. The map is organized with BGC names along the Y-axis and orthologous groups along the X-axis, making it easy to compare clusters. Each square in the map represents whether a specific gene is present in a BGC. If the square is green, the BGC contains that gene, while a gray square means the gene is absent. This visualization helps to identify patterns, such as shared genes between clusters or unique genes in specific BGCs. Since there can be many BGCs and genes, the table is scrollable in both directions, allowing for easy exploration of large datasets.</p>
 
-                        <h3 id="upload-sub4"><i class="fas fa-chevron-right"></i> Phylogenetic Tree</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam consectetur, purus nec maximus tristique, nunc nisi efficitur lectus, nec aliquam ipsum est a libero. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec elementum lacinia scelerisque.</p>
+                        <h3 id="upload-sub4"><i class="fas fa-chevron-right"></i> Visual Cluster Comparison</h3>
+                        <p>We provide a visual comparison of each cluster in the GCF, showing the structural organization and gene content across all BGCs in the family. The genes are colored based on which Orthologous Group (OG) they belong to, making it easy to identify homologous genes across different clusters. This color-coding system allows users to quickly spot conserved gene arrangements and identify structural variations within the family. Additionally, there is the possibility to display only unique clusters, which helps to reduce redundancy and focus on the diversity of gene arrangements present in the GCF.</p>
 
-                        <h2 id="species"><i class="fas fa-dna"></i> Selecting Species</h2>
-                        <h3 id="species-sub1"><i class="fas fa-chevron-right"></i> Filter Options</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod magna et felis volutpat fringilla. Vestibulum vel lacus vel nulla ultricies facilisis. Nulla facilisi. Phasellus tempor nisl ut dolor lobortis venenatis. Phasellus sodales risus non odio elementum, id finibus turpis eleifend.</p>
-                        
-                        <h3 id="species-sub2"><i class="fas fa-chevron-right"></i> Taxonomy View</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+                        <h3 id="upload-sub5"><i class="fas fa-chevron-right"></i> Phylogenetic Tree</h3>
+                        <p>A tanglegram between the Orthologous Group (OG) tree and the BGC tree is constructed to better understand the evolutionary relationships of the BGCs within the gene cluster family. The BGC tree is formed as a coalescent tree derived from the individual OG trees, providing insights into how gene content and arrangement have evolved across different lineages. This dual-tree visualization helps identify cases where BGC evolution follows species phylogeny versus instances of horizontal gene transfer or convergent evolution. The tanglegram format allows for direct comparison between gene-based and cluster-based evolutionary patterns, revealing the complex evolutionary history of biosynthetic pathways.</p>
 
-                        <h2 id="analysis"><i class="fas fa-chart-bar"></i> Analyzing Results</h2>
-                        <h3 id="analysis-sub1"><i class="fas fa-chevron-right"></i> Visualization</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et ante vel mauris porttitor volutpat. Fusce sit amet ex ut arcu feugiat consequat. Vivamus vitae leo ac quam faucibus volutpat vel vel orci. Etiam tincidunt magna id facilisis viverra. Maecenas eget enim vel nisi feugiat luctus.</p>
+                        <h3 id="upload-sub6"><i class="fas fa-chevron-right"></i> Module Composition Comparison</h3>
+                        <p>This feature creates a visual representation of the core biosynthetic modules in NRPS (Non-Ribosomal Peptide Synthetase) and PKS (Polyketide Synthase) systems, allowing users to examine differences in module composition between clusters within the same GCF. The analysis breaks down complex multi-modular enzymes into their constituent domains and modules, providing a detailed view of the biosynthetic logic encoded by each cluster. This comparison helps identify variations in substrate specificity, chain length, and modification patterns that contribute to the chemical diversity within a gene cluster family, enabling researchers to predict and compare the potential products of different BGCs.</p>
+
+                        <h2 id="species"><i class="fas fa-chart-line"></i> Statistics</h2>
+                        <h3 id="species-sub1"><i class="fas fa-chevron-right"></i> Openness Stats</h3>
+                        <p>The openness statistics section provides comprehensive insights into the diversity patterns across Gene Cluster Families. Users can explore statistical distributions of openness metrics through customizable filters, including specific gamma value ranges, BGC categories, and minimum family size thresholds to be included in the statistical overview. The interface displays several key visualizations: <strong>Distribution of Gamma Values</strong> showing the frequency distribution across the selected dataset, <strong>Average Gamma by Category</strong> revealing category-specific diversity patterns, <strong>Gamma Values Comparison by Category</strong> enabling direct comparisons between different biosynthetic classes, and detailed boxplots illustrating the differences between calculated gamma values. Additionally, users can investigate potential correlations between gamma values and family size.</p>
                         
-                        <h3 id="analysis-sub2"><i class="fas fa-chevron-right"></i> Statistical Reports</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum. Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+                        <h3 id="species-sub2"><i class="fas fa-chevron-right"></i> Gene Stats</h3>
+                        <p>The gene statistics section allows users to analyze gene presence patterns across different categories within the database. This analysis helps identify core biosynthetic elements that are consistently present within specific categories, as well as common tailoring genes that contribute to structural diversity. Users can visualize how frequently individual genes or orthologous groups appear across each category, enabling the identification of category-defining genetic elements and understanding the genetic basis for different types of natural products. This information is particularly valuable for predicting the biosynthetic potential of newly discovered clusters and understanding the evolutionary relationships between different biosynthetic pathways.</p>
+
+                        <h2 id="analysis"><i class="fas fa-search"></i> Query</h2>
+                        <h3 id="analysis-sub1"><i class="fas fa-chevron-right"></i> BGC Upload and Matching</h3>
+                        <p>In the Query tab, users can upload their own Biosynthetic Gene Cluster (BGC) to discover which existing Gene Cluster Family it might belong to. This feature uses cblaster, a powerful sequence comparison tool, to analyze the uploaded BGC against a comprehensive database containing theoretical maximum BGCs representative of each family in PanBGC-DB. The system performs similarity searches and displays the best matching results, helping users identify the most closely related gene cluster families and understand the biosynthetic context of their novel or uncharacterized BGCs.</p>
+
+                        <h2 id="visualization"><i class="fas fa-eye"></i> Visualisation</h2>
+                        <p>In the Visualisation tab, users can download an easy-to-use Python pipeline designed to analyze their own defined Gene Cluster Families (GCFs). This comprehensive pipeline allows researchers to perform the same type of detailed analysis available for the precomputed families within PanBGC-DB. Users can run the pipeline on their custom dataset, and it will generate all the necessary analyses including core/accessory gene classification, openness calculations, phylogenetic relationships, and visual comparisons. The pipeline produces a single summary file that can then be uploaded back to the PanBGC-DB website for interactive visualization and exploration, providing the same rich analytical interface available for the database's precomputed families.</p>
 
                         <h2 id="contact"><i class="fas fa-phone"></i> Contact</h2>
                         <h3 id="contact-sub1"><i class="fas fa-chevron-right"></i> Support</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec ullamcorper nulla non metus auctor fringilla. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-                        
-                        <div class="doc-note">
-                            <p><strong>Important:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <ul>
-                                <li>Lorem ipsum dolor sit amet</li>
-                                <li>Consectetur adipiscing elit</li>
-                                <li>Nullam quis risus eget</li>
-                            </ul>
-                        </div>
-
-                        <h3 id="contact-sub2"><i class="fas fa-chevron-right"></i> Community</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                        
-                        <div class="doc-code-container">
-                            <pre class="doc-code" id="community-link">test</pre>
-                            <button class="doc-copy-btn" data-target="community-link"><i class="fas fa-copy"></i> Copy</button>
-                        </div>
-                        
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                        
-                        <div class="doc-code-container">
-                            <pre class="doc-code" id="github-command">test</pre>
-                            <button class="doc-copy-btn" data-target="github-command"><i class="fas fa-copy"></i> Copy</button>
-                        </div>
-                        
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id elit non mi porta gravida at eget metus. Vestibulum id ligula porta felis euismod semper.</p>
+                        <p>For any questions or feedback, please contact us at <strong>davide.paccagnella@uni-tuebingen.de</strong></p>
                     </div>
                 </div>
             </div>
