@@ -13,7 +13,7 @@
 ## Access
 
 The web platform is available at:  
-👉 [https://panbgc-db.cs.uni-tuebingen.de](https://panbgc-db.cs.uni-tuebingen.de)
+👉 https://panbgc-db.cs.uni-tuebingen.de
 
 ## Source Code
 
@@ -40,3 +40,73 @@ These instructions work for **Linux** and **macOS**. If you are on Windows, the 
 **For Debian/Ubuntu and macOS with Intel chip:**
 ```bash
 conda create --name PanBGC_vis -c conda-forge -c bioconda zol
+```
+
+**For macOS with Apple Silicon chip:**
+```bash
+CONDA_SUBDIR=osx-64 conda create -n PanBGC_vis -c conda-forge -c bioconda zol
+```
+
+**For all systems (after creating the environment):**
+```bash
+conda activate PanBGC_vis
+pip install openpyxl tqdm
+```
+
+> **Note:** If you want to use all annotation libraries, you can remove the `-m` flag from the following command (increases download and run time):
+```bash
+setup_annotation_dbs.py -m
+```
+
+### Running the Pipeline
+
+1. **Extract the Scripts**  
+   Unzip the downloaded `Scripts.zip` to a location of your choice.
+
+2. **Navigate to the Scripts Directory**
+```bash
+cd /path/to/extracted/Scripts
+```
+
+3. **Run the Pipeline**
+
+If visualizing a **single Gene Cluster Family (GCF)**, the input folder can contain GenBank files directly.  
+For **multiple GCFs**, place subfolders (each containing GenBank files) inside the input folder. No further changes are required.
+
+```bash
+python PanBGC.py -i /path/to/input_folder \
+                 -o /path/to/result_folder \
+                 -log /path/to/result_folder/log \
+                 -c number_of_threads \
+                 -al /path/to/astral-pro3
+```
+
+> **Note:** The `astral-pro3` executable is found in the extracted `Astral-Pro3` folder under:  
+> `ASTER-Linux/bin/astral-pro3`
+
+**Parameters Explained:**
+- `-i`: Path to the input folder with GenBank files
+- `-o`: Path to the output directory
+- `-log`: Log file location
+- `-c`: Number of CPU threads to use
+- `-al`: Path to `astral-pro3` executable
+
+### Upload Results
+
+After successful execution, your output folder will contain:
+```
+/path/to/result_folder/signal_family/Final_Results/Visualisation.json
+```
+
+This file can be uploaded directly using the form on the left side of the PanBGC-DB interface.
+
+**Example command:**
+```bash
+python PanBGC.py -i ~/data/genomes \
+                 -o ~/results/analysis \
+                 -log ~/results/analysis/pipeline.log \
+                 -c 4 \
+                 -al ~/tools/ASTER-Linux/bin/astral-pro3
+```
+
+
