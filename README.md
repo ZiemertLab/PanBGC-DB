@@ -33,7 +33,7 @@ These instructions work for **Linux** and **macOS**. If you are on Windows, the 
 
 2. **Download Required Tools**  
    - Download and extract the folder [`Astral-Pro3`](https://github.com/chaoszhang/ASTER/blob/master/tutorial/astral-pro3.md) from GitHub.  
-   - Download the pipeline scripts from this repository file.
+   - Download the pipeline scripts from this repository file or directly from the website unuder the Visualisation tab.
 
 ### Installation Commands
 
@@ -95,7 +95,7 @@ python PanBGC.py -i /path/to/input_folder \
 
 After successful execution, your output folder will contain:
 ```
-/path/to/result_folder/signal_family/Final_Results/Visualisation.json
+/path/to/result_folder/single_family/Final_Results/Visualisation.json
 ```
 
 This file can be uploaded directly using the form on the left side of the PanBGC-DB interface.
