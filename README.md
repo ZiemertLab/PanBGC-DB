@@ -33,7 +33,7 @@ These instructions work for **Linux** and **macOS**. If you are on Windows, the 
 
 2. **Download Required Tools**  
    - Download and extract the folder [`Astral-Pro3`](https://github.com/chaoszhang/ASTER/blob/master/tutorial/astral-pro3.md) from GitHub.  
-   - Download and extract the [`Scripts.zip`](https://panbgc-db.cs.uni-tuebingen.de/data/Scripts.zip) file.
+   - Download the pipeline scripts from this repository file.
 
 ### Installation Commands
 
