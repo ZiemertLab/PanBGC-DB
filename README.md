@@ -4,11 +4,11 @@
 
 ## Features
 
-- Interactive visualization of BGC families and gene presence/absence matrices
-- Gene classification into core, accessory, and unique types
-- Openness metric calculation using Heaps’ Law
-- Comparative views of gene architecture, domain organization, and phylogenetic relationships
-- Query tool for uploading and comparing custom BGCs
+- Interactive visualization of BGC families and gene presence/absence matrices  
+- Gene classification into core, accessory, and unique types  
+- Openness metric calculation using Heaps’ Law  
+- Comparative views of gene architecture, domain organization, and phylogenetic relationships  
+- Query tool for uploading and comparing custom BGCs  
 
 ## Access
 
@@ -21,3 +21,22 @@ This repository contains the source code for:
 - The PanBGC-DB web interface
 - The backend clustering, orthologous grouping, and openness analysis scripts
 - Data processing and visualization modules
+
+## How to Create the Visualization
+
+### Prerequisites
+
+These instructions work for **Linux** and **macOS**. If you are on Windows, the **Windows Subsystem for Linux (WSL)** is recommended.
+
+1. **Install Miniconda**  
+   Download and install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) for your operating system.
+
+2. **Download Required Tools**  
+   - Download and extract the folder `Astral-Pro3` from GitHub.  
+   - Download and extract the `Scripts.zip` file (provided in this repository or project site).
+
+### Installation Commands
+
+**For Debian/Ubuntu and macOS with Intel chip:**
+```bash
+conda create --name PanBGC_vis -c conda-forge -c bioconda zol
