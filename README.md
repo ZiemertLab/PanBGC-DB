@@ -32,8 +32,8 @@ These instructions work for **Linux** and **macOS**. If you are on Windows, the 
    Download and install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) for your operating system.
 
 2. **Download Required Tools**  
-   - Download and extract the folder `Astral-Pro3` from GitHub.  
-   - Download and extract the `Scripts.zip` file (provided in this repository or project site).
+   - Download and extract the folder [`Astral-Pro3`](https://github.com/chaoszhang/ASTER/blob/master/tutorial/astral-pro3.md) from GitHub.  
+   - Download and extract the [`Scripts.zip`](https://panbgc-db.cs.uni-tuebingen.de/data/Scripts.zip) file.
 
 ### Installation Commands
 
@@ -108,5 +108,4 @@ python PanBGC.py -i ~/data/genomes \
                  -c 4 \
                  -al ~/tools/ASTER-Linux/bin/astral-pro3
 ```
-
 
